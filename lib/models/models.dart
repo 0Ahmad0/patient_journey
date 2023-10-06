@@ -44,16 +44,18 @@ class User {
   String typeUser;
   String? description;
   String? gender;
+  String? cardId;
   bool active;
   bool band;
   DateTime? dateBirth;
   List<String>? tokens;
-  num? wallet;
   String? location;
-  num? disKm;
+  num? verificationCode;
   num? latitude;
   num? longitude;
   User({
+
+
     required this.id,
     required this.uid,
     required this.name,
@@ -61,6 +63,8 @@ class User {
      this.lastName='',
     required this.email,
      this.phoneNumber,
+     this.cardId,
+     this.verificationCode,
     required this.password,
     required this.typeUser,
      this.photoUrl,
@@ -70,9 +74,6 @@ class User {
     this.active = false,
     this.band = false,
     this.tokens = const[],
-    this.wallet = 0,
-  //  this.trainerInfo,
-    this.disKm=0,
     this.latitude=0,
     this.longitude=0,
     this.location='',
@@ -102,8 +103,8 @@ class User {
         dateBirth: json["dateBirth"]!=null?json["dateBirth"].toDate():null,
         // tokens: json["tokens"],
         description: (data['description']!=null) ? json["description"] : "",
-        wallet: (data['wallet']!=null) ? json["wallet"] : 0,
-      disKm: json['disKm'],
+        cardId:  json["cardId"] ,
+      verificationCode: json['verificationCode'],
       latitude: json['latitude'],
       longitude: json['longitude'],
       location: json['location'],
@@ -131,8 +132,8 @@ class User {
     'active': active,
     'band': band,
     'tokens': tokens,
-    'wallet': wallet,
-    'disKm': disKm,
+    'cardId': cardId,
+    'verificationCode': verificationCode,
     'latitude': latitude,
     'longitude': longitude,
     'location': location,
@@ -277,32 +278,29 @@ class TrainerInfo {
 }
 
 //WalletChange
-class WalletChange {
+class MedicalReview {
   String id;
   String idUser;
   String idChange;
-  String change;
-  num value;
+  String text;
   DateTime dateTime;
   bool notification;
 
-  WalletChange({
+  MedicalReview({
     this.id="",
     required this.idUser,
      this.idChange='',
-     this.value=0,
-    required this.change,
+    required this.text,
     required this.dateTime,
     this.notification=false,
   });
 
-  factory WalletChange.fromJson(json) {
-    return WalletChange(
+  factory MedicalReview.fromJson(json) {
+    return MedicalReview(
         id: json['id'],
         idUser: json['idUser'],
         idChange: json['idChange'],
-        change: json['change'],
-        value: json['value'],
+        text: json['text'],
         notification: json['notification'],
         dateTime: json['dateTime'].toDate());
   }
@@ -312,57 +310,91 @@ class WalletChange {
       'id': id,
       'idUser': idUser,
       'idChange': idChange,
-      'change': change,
-      'value': value,
+      'text': text,
       'notification': notification,
       'dateTime': dateTime,
     };
   }
-  factory WalletChange.init(){
-    return WalletChange(idUser: '', change: '', dateTime: DateTime.now());
+  factory MedicalReview.init(){
+    return MedicalReview(idUser: '', text: '', dateTime: DateTime.now());
   }
 }
 
-//Wallet
-class Wallet {
+//Medical
+class Medical {
   String id;
   String idUser;
-  num value;
-  List<WalletChange> listWalletChange;
+  String name;
+  String type;
+  List<MedicalReview> listMedicalReview;
 
   //DateTime date;
-  Wallet({
+  Medical({
     this.id="",
-    this.value=0,
+    this.name='',
+    this.type='',
     required this.idUser,
-     required this.listWalletChange});
+     required this.listMedicalReview});
 
-  factory Wallet.fromJson(json) {
-    List<WalletChange> temp = [];
-    for (int i = 0; i < json['listWalletChange'].length; i++) {
-      WalletChange tempElement = WalletChange.fromJson(json['listWalletChange'][i]);
+  factory Medical.fromJson(json) {
+    List<MedicalReview> temp = [];
+    for (int i = 0; i < json['listMedicalReview'].length; i++) {
+      MedicalReview tempElement = MedicalReview.fromJson(json['listMedicalReview'][i]);
       temp.add(tempElement);
     }
-    return Wallet(
+    return Medical(
         id: (json['id']=='')?json.id:json['id'],
         idUser: json['idUser'],
-        value: json['value'],
-        listWalletChange: temp);
+        name: json['name'],
+        type: json['type'],
+        listMedicalReview: temp);
   }
 
   Map<String, dynamic> toJson() {
     List<Map<String, dynamic>> temp = [];
-    for (var element in listWalletChange) {
+    for (var element in listMedicalReview) {
       temp.add(element.toJson());
     }
     return {
       'id': id,
       'idUser': idUser,
-      'value': value,
+      'name': name,
+      'type': type,
       'listWalletChange': temp,
     };
   }
-  factory Wallet.init()=>Wallet(idUser: '',listWalletChange: []);
+  factory Medical.init()=>Medical(idUser: '',listMedicalReview: []);
+}
+//Medicals
+class Medicals {
+
+  List<Medical> listMedical;
+
+  //DateTime date;
+  Medicals({
+    required this.listMedical});
+
+  factory Medicals.fromJson(json) {
+    List<Medical> temp = [];
+    for (int i = 0; i < json.length; i++) {
+      Medical tempElement = Medical.fromJson(json[i]);
+      tempElement.id = json[i].id;
+      temp.add(tempElement);
+    }
+    return Medicals(
+        listMedical: temp);
+  }
+
+  Map<String, dynamic> toJson() {
+    List<Map<String, dynamic>> temp = [];
+    for (var element in listMedical) {
+      temp.add(element.toJson());
+    }
+    return {
+      'listMedical': temp,
+    };
+  }
+  factory Medicals.init()=>Medicals(listMedical: []);
 }
 
 

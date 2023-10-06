@@ -6,7 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:patient_journey/common_widgets/app_text_form_filed.dart';
 import 'package:patient_journey/constants/app_assets.dart';
 import 'package:patient_journey/constants/app_colors.dart';
-import 'package:url_launcher/url_launcher.dart';
+//import 'package:url_launcher/url_launcher.dart';
 
 class CommunicationScreen extends StatefulWidget {
   const CommunicationScreen({super.key});
@@ -28,7 +28,7 @@ class _CommunicationScreenState extends State<CommunicationScreen> {
     }
   }
   Future<void> _makePhoneCall(String phoneNumber) async {
-    await launchUrl(Uri.parse(url(phoneNumber, 'message')));
+    ///await launchUrl(Uri.parse(url(phoneNumber, 'message')));
   }
   @override
   Widget build(BuildContext context) {

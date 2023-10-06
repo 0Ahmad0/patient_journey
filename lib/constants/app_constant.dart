@@ -18,5 +18,6 @@ class AppConstants {
   static String collectionUser = "User";
   static String collectionDoctor = "Doctor";
   static String collectionVisitor = "Visitor";
+  static String collectionMedical = "Medical";
 
 }

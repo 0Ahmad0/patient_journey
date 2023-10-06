@@ -8,6 +8,7 @@ import 'package:patient_journey/screens/home_screen.dart';
 import 'package:patient_journey/screens/login_screen.dart';
 
 import '../common_widgets/app_text_form_filed.dart';
+import '../controller/auth_controller.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -28,7 +29,13 @@ class _SignupScreenState extends State<SignupScreen> {
   final verificationCodeController = TextEditingController();
   final userTypeController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  late  AuthController authController;
 
+  @override
+  void initState() {
+    authController=AuthController(context: context);
+    super.initState();
+  }
   @override
   void dispose() {
     firstNameController.dispose();
@@ -200,8 +207,9 @@ class _SignupScreenState extends State<SignupScreen> {
                           AppButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  Navigator.pushReplacement(context, MaterialPageRoute(
-                                      builder: (ctx)=>HomeScreen()));
+                                  authController.signUp(context, firstName: firstNameController.value.text, lastName: lastNameController.value.text, gender: sexController.value.text, dateBirth: DateTime.parse(birthDayController.value.text), email: emailController.text, password: passwordController.value.text, phoneNumber: phoneController.value.text, photoUrl: '', typeUser: userTypeController.value.text);
+                                  // Navigator.pushReplacement(context, MaterialPageRoute(
+                                  //     builder: (ctx)=>HomeScreen()));
                                 }
                               },
                               text: 'Sign Up'),

@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+//import 'package:image_picker/image_picker.dart';
 import 'package:patient_journey/controller/provider/profile_provider.dart';
 
 import 'package:provider/provider.dart';
@@ -18,7 +19,7 @@ class ProfileController{
   ProfileController({required this.context}){
     profileProvider= Provider.of<ProfileProvider>(context);
   }
-  Future uploadImage({required XFile image}) async {
+  Future uploadImage({required File image}) async {
     try {
       String path = basename(image!.path);
       print(image!.path);

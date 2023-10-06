@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:patient_journey/common_widgets/app_button.dart';
 import 'package:patient_journey/common_widgets/app_text_form_filed.dart';
 import 'package:patient_journey/constants/app_colors.dart';
+import 'package:provider/provider.dart';
+
+import '../controller/provider/profile_provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -35,7 +38,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
+        child:
+
+        ChangeNotifierProvider<ProfileProvider>.value(
+          value: Provider.of<ProfileProvider>(context),
+          child: Consumer<ProfileProvider>(
+            builder: (context, value, child){
+              nameController.text="${value.user.firstName}"+' '+"${value.user.lastName}";
+              emailController.text="${value.user.email}";
+              typeController.text="${value.user.typeUser}";
+              phoneController.text="${value.user.phoneNumber}";
+        return SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -105,7 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ],
           ),
-        ),
+        );}))
       ),
     );
   }

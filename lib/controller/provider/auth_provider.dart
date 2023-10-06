@@ -4,14 +4,18 @@ import 'dart:io';
 
 
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:patient_journey/controller/provider/profile_provider.dart';
 
 //import '../../model/models.dart' as models;
 
 import 'package:provider/provider.dart';
 
+import '../../common_widgets/constans.dart';
 import '../../constants/app_constant.dart';
+import '../../local/storage.dart';
 import '../../models/models.dart';
+import '../utils/firebase.dart';
 
 
 class AuthProvider with ChangeNotifier{
@@ -32,7 +36,7 @@ class AuthProvider with ChangeNotifier{
   }
   signup(context) async{
     final profileProvider = Provider.of<ProfileProvider>(context,listen: false);
-    bool checkPhoneOrEmailFound =await FirebaseFun.checkPhoneOrEmailFound(email:user.email, phone: user.phoneNumber??'');
+    bool checkPhoneOrEmailFound =await FirebaseFun.checkPhoneOrEmailFound(email:user.email, phone: user.phoneNumber??'',cardId:user.cardId??'');
     var result;
     if(checkPhoneOrEmailFound){
      result =await FirebaseFun.signup(email: user.email, password: user.password);
@@ -57,7 +61,7 @@ class AuthProvider with ChangeNotifier{
     return result;
   }
   signupAD(context) async{
-    bool checkPhoneOrEmailFound =await FirebaseFun.checkPhoneOrEmailFound(email:user.email, phone: user.phoneNumber??'');
+    bool checkPhoneOrEmailFound =await FirebaseFun.checkPhoneOrEmailFound(email:user.email, phone: user.phoneNumber??'',cardId: user.cardId??'');
     var result;
     if(checkPhoneOrEmailFound){
       result =await FirebaseFun.signup(email: user.email, password: user.password);
@@ -76,6 +80,7 @@ class AuthProvider with ChangeNotifier{
     return result;
   }
   login(context) async{
+    //var result=await loginWithPhoneNumber(context);
     var result=await loginWithPhoneNumber(context);
     if(!result['status'])
       result=await loginWithEmil(context);
@@ -100,7 +105,7 @@ class AuthProvider with ChangeNotifier{
 
     var resultUser =await FirebaseFun.loginWithPhoneNumber(phoneNumber: user.phoneNumber??user.email, password: user.password,typeUser: AppConstants.collectionUser);
     if(!resultUser["status"])
-      resultUser =await FirebaseFun.loginWithPhoneNumber(phoneNumber: user.phoneNumber??user.email, password: user.password,typeUser: AppConstants.collectionEmployee);
+      resultUser =await FirebaseFun.loginWithPhoneNumber(phoneNumber: user.phoneNumber??user.email, password: user.password,typeUser: AppConstants.collectionDoctor);
     if(!resultUser["status"])
       resultUser =await FirebaseFun.loginWithPhoneNumber(phoneNumber: user.phoneNumber??user.email, password: user.password,typeUser: AppConstants.collectionAdmin);
     if(resultUser['status'])
@@ -111,6 +116,23 @@ class AuthProvider with ChangeNotifier{
     }
     //var result;
    // result=await loginWithEmil(context);
+    return resultUser;
+  }
+  loginWithField(context) async{
+
+    var resultUser =await FirebaseFun.loginWithFiled(filed: 'cardId',value: user.cardId??user.email, password: user.password,typeUser: AppConstants.collectionUser);
+    if(!resultUser["status"])
+      resultUser =await FirebaseFun.loginWithFiled(filed: 'cardId',value: user.cardId??user.email, password: user.password,typeUser: AppConstants.collectionDoctor);
+    if(!resultUser["status"])
+      resultUser =await FirebaseFun.loginWithFiled(filed: 'cardId',value: user.cardId??user.email, password: user.password,typeUser: AppConstants.collectionAdmin);
+    if(resultUser['status'])
+    {
+      user= User.fromJson(resultUser['body']);
+      resultUser=await _baseLogin(context, resultUserAfterLog: resultUser);
+
+    }
+    //var result;
+    // result=await loginWithEmil(context);
     return resultUser;
   }
   _baseLogin(context,{required var resultUserAfterLog}) async{
@@ -169,7 +191,7 @@ class AuthProvider with ChangeNotifier{
     var result= await FirebaseFun.fetchUser(uid: uid, typeUser: AppConstants.collectionUser);
     // print(result);
     if(result['status']&&result['body']==null){
-      result = await FirebaseFun.fetchUser(uid: uid, typeUser: AppConstants.collectionEmployee);
+      result = await FirebaseFun.fetchUser(uid: uid, typeUser: AppConstants.collectionDoctor);
       if(result['status']&&result['body']==null){
 
         result = await FirebaseFun.fetchUser(uid: uid, typeUser: AppConstants.collectionAdmin);

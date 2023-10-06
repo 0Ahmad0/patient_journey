@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:patient_journey/constants/app_assets.dart';
-import 'package:url_launcher/url_launcher.dart';
+//import 'package:url_launcher/url_launcher.dart';
 
 class MyReportsScreen extends StatelessWidget {
   const MyReportsScreen({super.key});
@@ -67,9 +67,9 @@ class CardFileWidget extends StatelessWidget {
 
   launchFile({url}) async {
     final Uri _url = Uri.parse(url);
-    if (!await launchUrl(_url)) {
-    throw Exception('Could not launch $_url');
-    }
+    // if (!await launchUrl(_url)) {
+    // throw Exception('Could not launch $_url');
+    // }
   }
   @override
   Widget build(BuildContext context) {

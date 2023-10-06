@@ -4,6 +4,7 @@ import 'package:patient_journey/constants/app_assets.dart';
 import 'package:patient_journey/screens/login_screen.dart';
 
 import '../constants/app_strings.dart';
+import '../controller/splashController.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -17,12 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 5), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (ctx) => const LoginScreen(),
-        ),
-      );
+      SplashController().init(context);
     });
   }
 

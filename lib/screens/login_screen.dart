@@ -5,6 +5,7 @@ import 'package:patient_journey/constants/app_colors.dart';
 import 'package:patient_journey/screens/sign_up_screen.dart';
 
 import '../common_widgets/app_text_form_filed.dart';
+import '../controller/auth_controller.dart';
 import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -19,7 +20,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final passwordController = TextEditingController();
   final verificationCodeController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  late  AuthController authController;
 
+  @override
+  void initState() {
+    authController=AuthController(context: context);
+    super.initState();
+  }
   @override
   void dispose() {
     idController.dispose();
@@ -84,8 +91,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         AppButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                Navigator.pushReplacement(context, MaterialPageRoute(
-                                    builder: (ctx)=>HomeScreen()));
+                                authController.login(context, filed: idController.value.text, password: passwordController.value.text);
+                                // Navigator.pushReplacement(context, MaterialPageRoute(
+                                //     builder: (ctx)=>HomeScreen()));
                               }
                             },
                             text: 'Log in'),

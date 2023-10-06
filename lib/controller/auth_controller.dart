@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import 'package:get/get_core/src/get_main.dart';
+import 'package:patient_journey/screens/home_screen.dart';
 
 
 import 'package:provider/provider.dart';
 
 
+import '../common_widgets/constans.dart';
 import '../constants/app_constant.dart';
 import '../models/models.dart';
 import 'provider/auth_provider.dart';
@@ -19,22 +22,30 @@ class AuthController{
 
   visitor() async {
     await authProvider.visitor(context);
-        ()=>goRouter.pushReplacementNamed(AppRoute.home.name);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => const HomeScreen(),
+      ),
+    );
     //Get.off(()=>NavbarView());
   }
-  login(BuildContext context,{required String phone,String? email,required String password,}) async {
+  login(BuildContext context,{String? filed, String? phone,String? email,required String password,}) async {
     Const.loading(context);
     authProvider.user.email=email??'';
-    authProvider.user.phoneNumber=phone;
+    authProvider.user.phoneNumber=phone??'';
+    authProvider.user.cardId=filed??'';
     authProvider.user.password=password;
     final result=await authProvider.login(context);
 
-    //goRouter.pop();
+    Navigator.of(context).pop();
     if(result['status']){
-      if(authProvider.user.typeUser==AppConstants.collectionEmployee)
-         goRouter.pushReplacementNamed(AppRoute.homeEmployee.name);
-      else
-        goRouter.pushReplacementNamed(AppRoute.home.name);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (ctx) => const HomeScreen(),
+        ),
+      );
      // Get.off(() => NavbarView(), transition: Transition.circularReveal);
     }
 
@@ -53,18 +64,22 @@ class AuthController{
         gender: gender,
 
         dateBirth: dateBirth);
+    print(authProvider.user.toJson());
     final result=await signUpByUser(context);
     return result;
   }
   signUpByUser(BuildContext context) async {
     Const.loading(context);
     final result=await authProvider.signup(context);
-  // goRouter.pop();
+    Navigator.of(context).pop();
     if(result['status']){
     //  authProvider.user=User.init();
-      goRouter.pushReplacementNamed(AppRoute.home.name);
-      // Get.off(() => LoginView(),
-      //     transition: Transition.circularReveal);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (ctx) => const HomeScreen(),
+        ),
+      );
     }
     return result;
   }
@@ -74,7 +89,7 @@ class AuthController{
     final result =await authProvider.sendPasswordResetEmail(context, resetEmail: email);
     Navigator.of(context).pop();
     if(result['status']){
-     goRouter.pop();
+      Navigator.of(context).pop();
     }
   }
 }

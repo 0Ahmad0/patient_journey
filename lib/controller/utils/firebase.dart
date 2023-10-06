@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 
 
 import 'package:path/path.dart';
@@ -25,7 +26,7 @@ class FirebaseFun{
         .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
     return result;
   }
-  static checkPhoneOrEmailFound( {required String email,required String phone})  async {
+  static checkPhoneOrEmailFound( {required String email,required String phone,required String cardId})  async {
     var result=await FirebaseFirestore.instance.collection(AppConstants.collectionUser)
     .where('email',isEqualTo: email).
     get().then((onValueFetchUsers))
@@ -36,7 +37,13 @@ class FirebaseFun{
       get().then((onValueFetchUsers))
           .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
       if(result['status']&&result["body"].length<1){
-        return true;
+        result=await FirebaseFirestore.instance.collection(AppConstants.collectionUser)
+            .where('cardId',isEqualTo: cardId).
+        get().then((onValueFetchUsers))
+            .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+        if(result['status']&&result["body"].length<1){
+          return true;
+        }
       }
     }
     return false;
@@ -120,6 +127,15 @@ class FirebaseFun{
         .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
     return result;
   }
+  static loginWithFiled( {required String filed,required String value,required String password, required String typeUser })  async {
+    final result=await FirebaseFirestore.instance.collection(typeUser).
+    where('${filed}',isEqualTo: value)
+        .where('password',isEqualTo:password ).get().
+    then((onValueloginWithphoneNumber))
+        .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+
 
   static logout()  async {
     final result=await FirebaseAuth.instance.signOut()
@@ -185,34 +201,33 @@ class FirebaseFun{
   }
 
 
-  // ///Wallet
-  // static addWallet( {required model.Wallet wallet}) async {
-  //   final result= await FirebaseFirestore.instance.collection(AppConstants.collectionWallet).add(
-  //       wallet.toJson()
-  //   ).then(onValueAddWallet).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
-  //   return result;
-  // }
-  // static updateWallet( {required model.Wallet wallet}) async {
-  //   final result= await FirebaseFirestore.instance.collection(AppConstants.collectionWallet).doc(
-  //       wallet.id
-  //   ).update(wallet.toJson()).then(onValueUpdateWallet).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
-  //   return result;
-  // }
-  // static deleteWallet( {required model.Wallet wallet}) async {
-  //   final result= await FirebaseFirestore.instance.collection(AppConstants.collectionWallet).doc(
-  //       wallet.id
-  //   ).delete().then(onValueDeleteWallet).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
-  //   return result;
-  // }
-  // static fetchWalletByIdUser({required String idUser})  async {
-  //   final result=await FirebaseFirestore.instance.collection(AppConstants.collectionWallet)
-  //   .where('idUser',isEqualTo: idUser)
-  //       .get()
-  //       .then((onValueFetchWallets))
-  //       .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
-  //   return result;
-  // }
-  //
+  ///Medical
+  static addMedical( {required model.Medical medical}) async {
+    final result= await FirebaseFirestore.instance.collection(AppConstants.collectionMedical).add(
+        medical.toJson()
+    ).then(onValueAddMedical).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+  static updateMedical( {required model.Medical medical}) async {
+    final result= await FirebaseFirestore.instance.collection(AppConstants.collectionMedical).doc(
+        medical.id
+    ).update(medical.toJson()).then(onValueUpdateMedical).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+  static deleteMedical( {required model.Medical medical}) async {
+    final result= await FirebaseFirestore.instance.collection(AppConstants.collectionMedical).doc(
+        medical.id
+    ).delete().then(onValueDeleteMedical).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+  static fetchAllMedical()  async {
+    final result=await FirebaseFirestore.instance.collection(AppConstants.collectionMedical)
+        .get()
+        .then((onValueFetchMedicals))
+        .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+
   // ///Report
   // static addReport( {required model.Report report}) async {
   //   final result= await FirebaseFirestore.instance.collection(AppConstants.collectionReport).add(
@@ -240,10 +255,10 @@ class FirebaseFun{
   //       .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
   //   return result;
   // }
-
+  //
   // ///DateLawyer
   // static addDateTrainer( {required model.DateTrainer dateTrainer}) async {
-  //   final result= await FirebaseFirestore.instance.collection(AppConstants.collectionDateTrainer).add(
+  //   final result= await FirebaseFirestore.instance.collection(AppConstants.collectionDoctor).add(
   //       dateTrainer.toJson()
   //   ).then(onValueAddDateTrainer).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
   //   return result;
@@ -260,8 +275,8 @@ class FirebaseFun{
   //   ).delete().then(onValueDeleteDateTrainer).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
   //   return result;
   // }
-
-
+  //
+  //
 
 
   static Future<Map<String,dynamic>>  onError(error) async {
@@ -389,34 +404,34 @@ class FirebaseFun{
   }
 
 
-  static Future<Map<String,dynamic>>onValueAddWallet(value) async{
+  static Future<Map<String,dynamic>>onValueAddMedical(value) async{
     return {
       'status':true,
-      'message':'Wallet successfully add',
+      'message':'Medical successfully add',
       'body':{}
     };
   }
-  static Future<Map<String,dynamic>>onValueUpdateWallet(value) async{
+  static Future<Map<String,dynamic>>onValueUpdateMedical(value) async{
     return {
       'status':true,
-      'message':'Wallet successfully update',
+      'message':'Medical successfully update',
       'body':{}
     };
   }
-  static Future<Map<String,dynamic>>onValueDeleteWallet(value) async{
+  static Future<Map<String,dynamic>>onValueDeleteMedical(value) async{
     return {
       'status':true,
-      'message':'Wallet successfully delete',
+      'message':'Medical successfully delete',
       'body':{}
     };
   }
-  static Future<Map<String,dynamic>> onValueFetchWallets(value) async{
+  static Future<Map<String,dynamic>> onValueFetchMedicals(value) async{
     // print(true);
     print("Wallets count : ${value.docs.length}");
 
     return {
       'status':true,
-      'message':'Wallets successfully fetch',
+      'message':'Medicals successfully fetch',
       'body':value.docs
     };
   }
