@@ -6,8 +6,17 @@ import 'constants/app_strings.dart';
 import 'constants/app_theme.dart';
 import 'screens/login_screen.dart';
 import 'screens/medical_files_screen.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'firebase_options.dart';
 
-void main() {
+// ...
+
+Future<void> main() async {
+
+  //
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
   runApp(const MyApp());
 }
 

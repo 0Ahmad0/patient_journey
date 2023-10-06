@@ -43,6 +43,17 @@ dependencies:
   url_launcher:
   font_awesome_flutter:
   animated_text_kit:
+  #Cach Image
+  cached_network_image: ^3.2.3
+  #Firebase DB
+  firebase_core: ^2.15.1
+  firebase_auth: ^4.8.0
+  firebase_storage: ^11.2.6
+  cloud_firestore: ^4.9.0
+  smooth_page_indicator:
+  provider: ^6.0.5
+  get_storage: ^2.1.1
+  image_picker: ^1.0.4
 dev_dependencies:
   flutter_test:
     sdk: flutter
