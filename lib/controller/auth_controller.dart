@@ -64,7 +64,7 @@ class AuthController{
         gender: gender,
 
         dateBirth: dateBirth);
-    print(authProvider.user.toJson());
+
     final result=await signUpByUser(context);
     return result;
   }

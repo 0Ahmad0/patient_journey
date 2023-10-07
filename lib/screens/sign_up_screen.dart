@@ -29,13 +29,14 @@ class _SignupScreenState extends State<SignupScreen> {
   final verificationCodeController = TextEditingController();
   final userTypeController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  late  AuthController authController;
+  late AuthController authController;
 
   @override
   void initState() {
-    authController=AuthController(context: context);
+    authController = AuthController(context: context);
     super.initState();
   }
+
   @override
   void dispose() {
     firstNameController.dispose();
@@ -129,15 +130,15 @@ class _SignupScreenState extends State<SignupScreen> {
                           StatefulBuilder(builder: (context, setStateBirthDay) {
                             return AppTextFormFiled(
                               readOnly: true,
-                              onTap: () async{
+                              onTap: () async {
                                 final picker = await showDatePicker(
                                     context: context,
                                     initialDate: DateTime.now(),
-                                    firstDate: DateTime.now(),
+                                    firstDate: DateTime(1960),
                                     lastDate: DateTime(2040));
                                 setStateBirthDay(() {
                                   birthDayController.text =
-                                      DateFormat.yMd().format(picker!);
+                                      DateFormat('dd-MM-yyyy').format(picker!);
                                 });
                               },
                               iconData: Icons.cake_outlined,
@@ -159,8 +160,8 @@ class _SignupScreenState extends State<SignupScreen> {
                             height: 20.0,
                           ),
                           DropdownButtonFormField(
-                              validator: (value){
-                                if(value == null){
+                              validator: (value) {
+                                if (value == null) {
                                   return 'Required*';
                                 }
                               },
@@ -186,19 +187,20 @@ class _SignupScreenState extends State<SignupScreen> {
                             height: 20.0,
                           ),
                           DropdownButtonFormField(
-                            validator: (value){
-                              if(value == null){
-                                return 'Required*';
-                              }
-                            },
+                              validator: (value) {
+                                if (value == null) {
+                                  return 'Required*';
+                                }
+                              },
                               icon: const Icon(Icons.keyboard_arrow_down),
                               decoration: _getDropDownDecoration(
-                                  hintText: 'You Sign up as', icon: Icons.accessibility),
+                                  hintText: 'You Sign up as',
+                                  icon: Icons.accessibility),
                               items: ['Doctor', 'Patient']
                                   .map((e) => DropdownMenuItem(
-                                child: Text(e.toString()),
-                                value: e.toString(),
-                              ))
+                                        child: Text(e.toString()),
+                                        value: e.toString(),
+                                      ))
                                   .toList(),
                               onChanged: (value) {}),
                           const SizedBox(
@@ -207,7 +209,16 @@ class _SignupScreenState extends State<SignupScreen> {
                           AppButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  authController.signUp(context, firstName: firstNameController.value.text, lastName: lastNameController.value.text, gender: sexController.value.text, dateBirth: DateTime.parse(birthDayController.value.text), email: emailController.text, password: passwordController.value.text, phoneNumber: phoneController.value.text, photoUrl: '', typeUser: userTypeController.value.text);
+                                  authController.signUp(context,
+                                      firstName: firstNameController.value.text,
+                                      lastName: lastNameController.value.text,
+                                      gender: sexController.value.text,
+                                      dateBirth: DateTime.now(),
+                                      email: emailController.text,
+                                      password: passwordController.value.text,
+                                      phoneNumber: phoneController.value.text,
+                                      photoUrl: '',
+                                      typeUser: userTypeController.value.text);
                                   // Navigator.pushReplacement(context, MaterialPageRoute(
                                   //     builder: (ctx)=>HomeScreen()));
                                 }
@@ -218,9 +229,12 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                           TextButton(
                               onPressed: () {
-                                Navigator.pushReplacement(context, MaterialPageRoute(
-                                    builder: (ctx)=>LoginScreen(),fullscreenDialog: true
-                                ),);
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (ctx) => LoginScreen(),
+                                      fullscreenDialog: true),
+                                );
                               },
                               child: const Text.rich(TextSpan(children: [
                                 TextSpan(
@@ -236,7 +250,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-
                               ])))
                         ],
                       ),
@@ -249,7 +262,8 @@ class _SignupScreenState extends State<SignupScreen> {
           Positioned(
             right: 0.0,
             child: SafeArea(
-              child: Image.asset(AppAssets.logoIMG,
+              child: Image.asset(
+                AppAssets.logoIMG,
                 width: size.width * 0.3,
               ),
             ),
