@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "282211431625",
+    "project_id": "patient-journey-d1604",
+    "storage_bucket": "patient-journey-d1604.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282211431625:android:e20786a3b5c4b86fd58918",
+        "android_client_info": {
+          "package_name": "com.example.patient_journey"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXfI2ma1nskIW1nfZgxUcCd4OAqsw0G3c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

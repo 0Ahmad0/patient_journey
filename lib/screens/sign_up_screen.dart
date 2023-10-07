@@ -217,7 +217,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                       email: emailController.text,
                                       password: passwordController.value.text,
                                       phoneNumber: phoneController.value.text,
-                                      photoUrl: '',
+                                      photoUrl: 'https://',
                                       typeUser: userTypeController.value.text);
                                   // Navigator.pushReplacement(context, MaterialPageRoute(
                                   //     builder: (ctx)=>HomeScreen()));
