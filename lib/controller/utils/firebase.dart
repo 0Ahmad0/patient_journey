@@ -49,6 +49,9 @@ class FirebaseFun{
     return false;
   }
    static createUser( {required model.User user}) async {
+     print("=======================");
+     print(user.typeUser);
+     print("=======================");
      final result= await FirebaseFirestore.instance.collection(user.typeUser).add(
        user.toJson()
      ).then((value){

@@ -51,11 +51,15 @@ dependencies:
   get_storage:
   image_picker: ^1.0.4
   flutter_styled_toast: ^2.2.1
-  firebase_core:
-  firebase_auth:
-  firebase_storage:
-  cloud_firestore:
+#  firebase_core:
+#  firebase_auth:
+#  firebase_storage:
+#  cloud_firestore:
   get: ^4.6.6
+  cloud_firestore: ^4.9.3
+  firebase_storage: ^11.2.8
+  firebase_auth: ^4.10.1
+  firebase_core: ^2.17.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
