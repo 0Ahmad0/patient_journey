@@ -20,13 +20,14 @@ class _LoginScreenState extends State<LoginScreen> {
   final passwordController = TextEditingController();
   final verificationCodeController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  late  AuthController authController;
+  late AuthController authController;
 
   @override
   void initState() {
-    authController=AuthController(context: context);
+    authController = AuthController(context: context);
     super.initState();
   }
+
   @override
   void dispose() {
     idController.dispose();
@@ -45,9 +46,10 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               const SafeArea(child: SizedBox.shrink()),
               Expanded(
-                child: Image.asset(AppAssets.doctorsIMG,
-                  width: size.width /1.5,
-                  height: size.width /1.5,
+                child: Image.asset(
+                  AppAssets.doctorsIMG,
+                  width: size.width / 1.5,
+                  height: size.width / 1.5,
                 ),
               ),
               Container(
@@ -91,7 +93,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         AppButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                authController.login(context, filed: idController.value.text, password: passwordController.value.text);
+                                authController.login(
+                                  context,
+                                  email: idController.value.text,
+                                  password: passwordController.value.text,
+
+                                );
                                 // Navigator.pushReplacement(context, MaterialPageRoute(
                                 //     builder: (ctx)=>HomeScreen()));
                               }
@@ -105,9 +112,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (ctx) => const SignupScreen(),
-                                  fullscreenDialog: true
-                                ),
+                                    builder: (ctx) => const SignupScreen(),
+                                    fullscreenDialog: true),
                               );
                             },
                             child: const Text.rich(TextSpan(children: [
@@ -140,7 +146,8 @@ class _LoginScreenState extends State<LoginScreen> {
           Positioned(
             right: 0.0,
             child: SafeArea(
-              child: Image.asset(AppAssets.logoIMG,
+              child: Image.asset(
+                AppAssets.logoIMG,
                 width: size.width * 0.3,
               ),
             ),

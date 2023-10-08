@@ -49,9 +49,6 @@ class FirebaseFun{
     return false;
   }
    static createUser( {required model.User user}) async {
-     print("=======================");
-     print(user.typeUser);
-     print("=======================");
      final result= await FirebaseFirestore.instance.collection(user.typeUser).add(
        user.toJson()
      ).then((value){
@@ -119,7 +116,7 @@ class FirebaseFun{
       email: email,///"temp@gmail.com",
       password: password,///"123456"
     ).then((onValuelogin))
-        .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+        .catchError(onError).timeout(timeOut,onTimeout: onTimeOut,);
     return result;
   }
   static loginWithPhoneNumber( {required String phoneNumber,required String password, required String typeUser })  async {
