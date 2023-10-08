@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return snackBar;
   }
 
-  _loginFirebase({emailAddress,password}) async {
+  _loginFirebase(BuildContext context,{emailAddress,password}) async {
     try {
       final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailAddress,
@@ -108,9 +108,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         AppTextFormFiled(
-                          iconData: Icons.numbers,
+                          iconData: Icons.email,
                           controller: idController,
-                          hintText: 'Enter your ID number',
+                          hintText: 'Enter your Email',
                         ),
                         const SizedBox(
                           height: 20.0,
@@ -137,6 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 _loginFirebase(
+                                    context,
                                   emailAddress: idController.text,
                                   password: passwordController.text
                                 );
