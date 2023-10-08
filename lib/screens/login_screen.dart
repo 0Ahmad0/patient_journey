@@ -38,13 +38,21 @@ class _LoginScreenState extends State<LoginScreen> {
     verificationCodeController.dispose();
     super.dispose();
   }
-   _showSnackBar({title,color = Colors.green,}) {
-    Get.showSnackbar(
-      GetSnackBar(
-        title: title,
-        backgroundColor: color,
+  SnackBar _showSnackBar({title,color = Colors.green,}) {
+    final snackBar = SnackBar(
+      content: Text(title),
+      dismissDirection: DismissDirection.horizontal,
+      backgroundColor: color,
+      action: SnackBarAction(
+        label: 'Undo',
+        textColor: AppColors.white,
+
+        onPressed: () {
+
+        },
       ),
     );
+    return snackBar;
   }
 
   _loginFirebase(BuildContext context,{emailAddress,password}) async {
@@ -54,18 +62,18 @@ class _LoginScreenState extends State<LoginScreen> {
           password: password
       );
       if(credential.user != null ){
-        _showSnackBar(title: 'Success');
+        ScaffoldMessenger.of(context).showSnackBar(_showSnackBar(title: 'Success'));
         Get.to(()=>HomeScreen());
       }else{
-        _showSnackBar(title: 'Error',color: Colors.red);
+        ScaffoldMessenger.of(context).showSnackBar(_showSnackBar(title: 'Error',color: Colors.red));
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
-        _showSnackBar(title: 'No user found for that email.',color: AppColors.error);
+        ScaffoldMessenger.of(context).showSnackBar(_showSnackBar(title: 'No user found for that email.',color: AppColors.error));
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
-        _showSnackBar(title: 'Wrong password provided for that user.',color: AppColors.error);
+        ScaffoldMessenger.of(context).showSnackBar(_showSnackBar(title: 'Wrong password provided for that user.',color: AppColors.error));
       }
     }
   }
