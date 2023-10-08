@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:patient_journey/common_widgets/app_button.dart';
+import 'package:patient_journey/common_widgets/constans.dart';
 import 'package:patient_journey/constants/app_assets.dart';
 import 'package:patient_journey/constants/app_colors.dart';
 import 'package:patient_journey/screens/sign_up_screen.dart';
@@ -34,6 +37,46 @@ class _LoginScreenState extends State<LoginScreen> {
     passwordController.dispose();
     verificationCodeController.dispose();
     super.dispose();
+  }
+  SnackBar _showSnackBar({title,color = Colors.green,}) {
+    final snackBar = SnackBar(
+      content: Text(title),
+      dismissDirection: DismissDirection.horizontal,
+      backgroundColor: color,
+      action: SnackBarAction(
+
+        label: 'Undo',
+        textColor: AppColors.white,
+
+        onPressed: () {
+
+        },
+      ),
+    );
+    return snackBar;
+  }
+
+  _loginFirebase({emailAddress,password}) async {
+    try {
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailAddress,
+          password: password
+      );
+      if(credential.user != null ){
+        ScaffoldMessenger.of(context).showSnackBar(_showSnackBar(title: 'Success'));
+        Get.to(()=>HomeScreen());
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(_showSnackBar(title: 'Error',color: Colors.red));
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+        ScaffoldMessenger.of(context).showSnackBar(_showSnackBar(title: 'No user found for that email.',color: AppColors.error));
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+        ScaffoldMessenger.of(context).showSnackBar(_showSnackBar(title: 'Wrong password provided for that user.',color: AppColors.error));
+      }
+    }
   }
 
   @override
@@ -93,12 +136,16 @@ class _LoginScreenState extends State<LoginScreen> {
                         AppButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                authController.login(
-                                  context,
-                                  email: idController.value.text,
-                                  password: passwordController.value.text,
-
+                                _loginFirebase(
+                                  emailAddress: idController.text,
+                                  password: passwordController.text
                                 );
+                                // authController.login(
+                                //   context,
+                                //   phone: idController.value.text,
+                                //   password: passwordController.value.text,
+                                //
+                                // );
                                 // Navigator.pushReplacement(context, MaterialPageRoute(
                                 //     builder: (ctx)=>HomeScreen()));
                               }
