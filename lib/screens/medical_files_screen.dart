@@ -46,6 +46,9 @@ class _MedicalFilesScreenState extends State<MedicalFilesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Medical Files'),
+      ),
       body: Column(
         children: [
           const SafeArea(child: SizedBox.shrink()),
