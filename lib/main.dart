@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:patient_journey/screens/admin/admin_home_screen.dart';
 import 'package:patient_journey/screens/home_screen.dart';
 import 'package:patient_journey/screens/splash_screen.dart';
+import 'package:patient_journey/show_add_review_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'constants/app_strings.dart';
@@ -41,7 +42,8 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.myTheme,
       title: AppString.appName,
       // home: SplashScreen(),
-      home: AdminHomeScreen(),
+      // home: AdminHomeScreen(),
+      home: ShowAndAddReviewScreen(),
     ));
   }
 }

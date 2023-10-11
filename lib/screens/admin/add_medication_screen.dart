@@ -18,7 +18,7 @@ class _AddMedicationScreenState extends State<AddMedicationScreen> {
   final descriptionMedication = TextEditingController();
   final photoMedication = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
+  FilePickerResult? photoMedicationFile;
   @override
   void dispose() {
     nameMedication.dispose();
@@ -63,19 +63,44 @@ class _AddMedicationScreenState extends State<AddMedicationScreen> {
                 height: 10.0,
               ),
               StatefulBuilder(builder: (context, fileSetState) {
-                return AppTextFormFiled(
-                  readOnly: true,
-                  onTap: () async {
-                    FilePickerResult? photoMedicationFile = await FilePicker.platform
-                        .pickFiles(type: FileType.image);
-                    if(photoMedicationFile != null ){
-                      photoMedication.text = photoMedicationFile.files.first.name;
-                      fileSetState((){});
-                    }
-                  },
-                  controller: photoMedication,
-                  iconData: Icons.photo,
-                  hintText: 'Click to Add Photo',
+                return Stack(
+                  children: [
+
+                    AppTextFormFiled(
+                      readOnly: true,
+                      onTap: () async {
+                        photoMedicationFile = await FilePicker
+                            .platform
+                            .pickFiles(type: FileType.image);
+                        if (photoMedicationFile != null) {
+                          photoMedication.text =
+                              photoMedicationFile!.files.first.name;
+                          fileSetState(() {});
+                        }
+                      },
+                      controller: photoMedication,
+                      iconData: Icons.photo,
+                      hintText: 'Click to Add Photo',
+                    ),
+                    Visibility(
+                      visible: !photoMedication.text.isEmpty,
+                      child: Positioned(
+                        right: 10,
+                        bottom: 10,
+                        child: CircleAvatar(
+                          child: IconButton(
+                            onPressed: () {
+                              photoMedication.clear();
+                              fileSetState((){
+
+                              });
+                            },
+                            icon: Icon(Icons.close,color: AppColors.white,),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 );
               }),
               const SizedBox(
