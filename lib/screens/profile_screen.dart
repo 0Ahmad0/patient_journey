@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:patient_journey/common_widgets/app_button.dart';
 import 'package:patient_journey/common_widgets/app_text_form_filed.dart';
 import 'package:patient_journey/constants/app_colors.dart';
+import 'package:patient_journey/local/storage.dart';
+import 'package:patient_journey/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../controller/provider/profile_provider.dart';
@@ -112,7 +114,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 height: 20.0,
               ),
               AppButton(
-                onPressed: () {},
+                onPressed: () {
+                  AppStorage.depose();
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=>LoginScreen()));
+                },
                 text: 'Log out',
                 icon: const Icon(Icons.logout_outlined),
               ),

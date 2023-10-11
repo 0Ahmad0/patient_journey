@@ -42,10 +42,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.myTheme,
       title: AppString.appName,
-      // home: SplashScreen(),
+       home: SplashScreen(),
       // home: AdminHomeScreen(),
       // home: ShowAndAddReviewScreen(),
-      home: ListDoctorsScreen(),
+      //home: ListDoctorsScreen(),
     ));
   }
 }

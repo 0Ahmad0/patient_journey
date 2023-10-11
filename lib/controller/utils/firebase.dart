@@ -27,17 +27,17 @@ class FirebaseFun{
     return result;
   }
   static checkPhoneOrEmailFound( {required String email,required String phone,required String cardId})  async {
-    var result=await FirebaseFirestore.instance.collection(AppConstants.collectionUser)
+    var result=await FirebaseFirestore.instance.collection(AppConstants.collectionPatient)
     .where('email',isEqualTo: email).
     get().then((onValueFetchUsers))
         .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
     if(result['status']&&result["body"].length<1){
-      result=await FirebaseFirestore.instance.collection(AppConstants.collectionUser)
+      result=await FirebaseFirestore.instance.collection(AppConstants.collectionPatient)
           .where('phoneNumber',isEqualTo: phone).
       get().then((onValueFetchUsers))
           .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
       if(result['status']&&result["body"].length<1){
-        result=await FirebaseFirestore.instance.collection(AppConstants.collectionUser)
+        result=await FirebaseFirestore.instance.collection(AppConstants.collectionPatient)
             .where('cardId',isEqualTo: cardId).
         get().then((onValueFetchUsers))
             .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
@@ -129,8 +129,10 @@ class FirebaseFun{
   }
   static loginWithFiled( {required String filed,required String value,required String password, required String typeUser })  async {
     final result=await FirebaseFirestore.instance.collection(typeUser).
-    where('${filed}',isEqualTo: value)
-        .where('password',isEqualTo:password ).get().
+    where(filed,isEqualTo: value)
+       .
+    where('password',isEqualTo:password ).
+    get().
     then((onValueloginWithphoneNumber))
         .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
     return result;
@@ -162,7 +164,7 @@ class FirebaseFun{
   }
 
   static fetchUsers()  async {
-    final result=await FirebaseFirestore.instance.collection(AppConstants.collectionUser)
+    final result=await FirebaseFirestore.instance.collection(AppConstants.collectionPatient)
         .get()
         .then((onValueFetchUsers))
         .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);

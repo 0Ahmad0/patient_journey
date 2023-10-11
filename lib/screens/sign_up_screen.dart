@@ -213,6 +213,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 print(userTypeController.value.text);
                                 if (_formKey.currentState!.validate()) {
                                   authController.signUp(context,
+                                      cardId: idController.value.text,
                                       firstName: firstNameController.value.text,
                                       lastName: lastNameController.value.text,
                                       gender: sexController.value.text,

@@ -135,17 +135,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         AppButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                _loginFirebase(
-                                    context,
-                                  emailAddress: idController.text,
-                                  password: passwordController.text
-                                );
-                                // authController.login(
-                                //   context,
-                                //   phone: idController.value.text,
-                                //   password: passwordController.value.text,
-                                //
+                                // _loginFirebase(
+                                //     context,
+                                //   emailAddress: idController.text,
+                                //   password: passwordController.text
                                 // );
+                                authController.login(
+                                  context,
+                                  filed: idController.value.text,
+                                  password: passwordController.value.text,
+
+                                );
                                 // Navigator.pushReplacement(context, MaterialPageRoute(
                                 //     builder: (ctx)=>HomeScreen()));
                               }

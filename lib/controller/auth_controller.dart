@@ -58,6 +58,7 @@ class AuthController {
 
   signUp(BuildContext context,
       {required String firstName,
+        required String cardId,
       required String lastName,
       required String gender,
       required DateTime dateBirth,
@@ -69,6 +70,7 @@ class AuthController {
     authProvider.user = User(
         id: '',
         uid: '',
+        cardId: cardId,
         name: '$firstName $lastName',
         firstName: firstName,
         lastName: lastName,

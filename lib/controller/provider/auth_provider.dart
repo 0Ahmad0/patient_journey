@@ -23,7 +23,7 @@ class AuthProvider with ChangeNotifier {
   var phoneNumber = TextEditingController();
   var password = TextEditingController();
   var confirmPassword = TextEditingController();
-  String typeUser = AppConstants.collectionUser;
+  String typeUser = AppConstants.collectionPatient;
   List<String> listTypeUserWithActive = [AppConstants.collectionDoctor];
   User user = User(
       id: "id",
@@ -121,7 +121,9 @@ class AuthProvider with ChangeNotifier {
 
   login(context) async {
     //var result=await loginWithPhoneNumber(context);
-    var result = await loginWithPhoneNumber(context);
+
+    var result = await loginWithField(context);
+
     if (!result['status']) result = await loginWithEmil(context);
     print(result);
     Const.TOAST(context,
@@ -147,7 +149,7 @@ class AuthProvider with ChangeNotifier {
     var resultUser = await FirebaseFun.loginWithPhoneNumber(
         phoneNumber: user.phoneNumber ?? user.email,
         password: user.password,
-        typeUser: AppConstants.collectionUser);
+        typeUser: AppConstants.collectionPatient);
     if (!resultUser["status"])
       resultUser = await FirebaseFun.loginWithPhoneNumber(
           phoneNumber: user.phoneNumber ?? user.email,
@@ -172,7 +174,7 @@ class AuthProvider with ChangeNotifier {
         filed: 'cardId',
         value: user.cardId ?? user.email,
         password: user.password,
-        typeUser: AppConstants.collectionUser);
+        typeUser: AppConstants.collectionPatient);
     if (!resultUser["status"])
       resultUser = await FirebaseFun.loginWithFiled(
           filed: 'cardId',
@@ -252,7 +254,7 @@ class AuthProvider with ChangeNotifier {
 
   fetchUser({required String uid}) async {
     var result = await FirebaseFun.fetchUser(
-        uid: uid, typeUser: AppConstants.collectionUser);
+        uid: uid, typeUser: AppConstants.collectionPatient);
     // print(result);
     if (result['status'] && result['body'] == null) {
       result = await FirebaseFun.fetchUser(
