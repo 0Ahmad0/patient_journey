@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:patient_journey/screens/admin/admin_home_screen.dart';
 import 'package:patient_journey/screens/home_screen.dart';
 import 'package:patient_journey/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +40,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.myTheme,
       title: AppString.appName,
-      home: SplashScreen(),
+      // home: SplashScreen(),
+      home: AdminHomeScreen(),
     ));
   }
 }
