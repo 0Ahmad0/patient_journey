@@ -7,4 +7,5 @@ class AppAssets{
   static const communicationIMG = '$pathIMG/communication.json';
   static const pdfFileIMG = '$pathIMG/pdf_file.svg';
   static const addMedicationIMG = '$pathIMG/add_medication.json';
+  static const emptyIMG = '$pathIMG/empty.json';
 }

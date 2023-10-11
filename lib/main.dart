@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:patient_journey/list_doctors_screen.dart';
 import 'package:patient_journey/screens/admin/admin_home_screen.dart';
 import 'package:patient_journey/screens/home_screen.dart';
 import 'package:patient_journey/screens/splash_screen.dart';
@@ -43,7 +44,8 @@ class MyApp extends StatelessWidget {
       title: AppString.appName,
       // home: SplashScreen(),
       // home: AdminHomeScreen(),
-      home: ShowAndAddReviewScreen(),
+      // home: ShowAndAddReviewScreen(),
+      home: ListDoctorsScreen(),
     ));
   }
 }

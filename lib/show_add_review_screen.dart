@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:patient_journey/common_widgets/app_text_form_filed.dart';
+import 'package:patient_journey/constants/app_assets.dart';
 import 'package:patient_journey/constants/app_colors.dart';
 
 class ShowAndAddReviewScreen extends StatefulWidget {
@@ -27,17 +29,22 @@ class _ShowAndAddReviewScreenState extends State<ShowAndAddReviewScreen> {
       ),
       body: Column(
         children: [
-          reviewsList.isEmpty?Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text('Not Reviews Yet!')
-              ],
+          reviewsList.isEmpty?Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Lottie.asset(AppAssets.emptyIMG),
+                   Text('Not Reviews Yet!',style: TextStyle(
+                    fontSize: MediaQuery.sizeOf(context).width * 0.08,
+                     fontWeight: FontWeight.bold
+                  ),),
+                ],
+              ),
             ),
           ):Expanded(
             child: ListView.separated(
+              reverse: true,
               itemCount: reviewsList.length,
               itemBuilder: (_, index) => ListTile(
                 leading: CircleAvatar(),
@@ -51,7 +58,7 @@ class _ShowAndAddReviewScreenState extends State<ShowAndAddReviewScreen> {
                       //ToDo: Delete Review
                       showAdaptiveDialog(context: context, builder: (_){
                         return AlertDialog(
-                          title: Text('Rwmove This Review'),
+                          title: const Text('Rwmove This Review'),
                           content: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             mainAxisSize: MainAxisSize.min,
