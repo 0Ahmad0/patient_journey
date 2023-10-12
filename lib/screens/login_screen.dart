@@ -38,45 +38,6 @@ class _LoginScreenState extends State<LoginScreen> {
     verificationCodeController.dispose();
     super.dispose();
   }
-  SnackBar _showSnackBar({title,color = Colors.green,}) {
-    final snackBar = SnackBar(
-      content: Text(title),
-      dismissDirection: DismissDirection.horizontal,
-      backgroundColor: color,
-      action: SnackBarAction(
-        label: 'Undo',
-        textColor: AppColors.white,
-
-        onPressed: () {
-
-        },
-      ),
-    );
-    return snackBar;
-  }
-
-  _loginFirebase(BuildContext context,{emailAddress,password}) async {
-    try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailAddress,
-          password: password
-      );
-      if(credential.user != null ){
-        ScaffoldMessenger.of(context).showSnackBar(_showSnackBar(title: 'Success'));
-        Get.to(()=>HomeScreen());
-      }else{
-        ScaffoldMessenger.of(context).showSnackBar(_showSnackBar(title: 'Error',color: Colors.red));
-      }
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-        ScaffoldMessenger.of(context).showSnackBar(_showSnackBar(title: 'No user found for that email.',color: AppColors.error));
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-        ScaffoldMessenger.of(context).showSnackBar(_showSnackBar(title: 'Wrong password provided for that user.',color: AppColors.error));
-      }
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,19 +96,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         AppButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                // _loginFirebase(
-                                //     context,
-                                //   emailAddress: idController.text,
-                                //   password: passwordController.text
-                                // );
                                 authController.login(
                                   context,
                                   filed: idController.value.text,
                                   password: passwordController.value.text,
-
                                 );
-                                // Navigator.pushReplacement(context, MaterialPageRoute(
-                                //     builder: (ctx)=>HomeScreen()));
                               }
                             },
                             text: 'Log in'),

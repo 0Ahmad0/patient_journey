@@ -9,6 +9,7 @@ import 'package:patient_journey/screens/verifey_email.dart';
 import 'package:patient_journey/show_add_review_screen.dart';
 import 'package:provider/provider.dart';
 
+import 'add_treatment_plan_screen.dart';
 import 'constants/app_strings.dart';
 import 'constants/app_theme.dart';
 import 'controller/provider/auth_provider.dart';
@@ -43,11 +44,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.myTheme,
       title: AppString.appName,
-       // home: SplashScreen(),
-       home: VerifyScreen(),
-      // home: AdminHomeScreen(),
-      // home: ShowAndAddReviewScreen(),
-      //home: ListDoctorsScreen(),
+       home: AddTreatmentPlanScreen(),
     ));
   }
 }
