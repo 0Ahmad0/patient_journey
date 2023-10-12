@@ -8,4 +8,5 @@ class AppAssets{
   static const pdfFileIMG = '$pathIMG/pdf_file.svg';
   static const addMedicationIMG = '$pathIMG/add_medication.json';
   static const emptyIMG = '$pathIMG/empty.json';
+  static const emailVerifyIMG = '$pathIMG/email_verify.json';
 }

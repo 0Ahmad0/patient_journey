@@ -115,6 +115,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             iconData: Icons.phone_android,
                             controller: phoneController,
                             hintText: 'Enter your Phone number',
+                            keyboardType: TextInputType.phone,
                           ),
                           const SizedBox(
                             height: 20.0,
@@ -123,6 +124,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             iconData: Icons.email_outlined,
                             controller: emailController,
                             hintText: 'Enter your Email',
+                            keyboardType: TextInputType.emailAddress,
                           ),
                           const SizedBox(
                             height: 20.0,
@@ -144,6 +146,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               iconData: Icons.cake_outlined,
                               controller: birthDayController,
                               hintText: 'Enter your Birth date',
+                              keyboardType: TextInputType.datetime,
                             );
                           }),
                           const SizedBox(
@@ -175,14 +178,14 @@ class _SignupScreenState extends State<SignupScreen> {
                                       ))
                                   .toList(),
                               onChanged: (value) {}),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
-                          AppTextFormFiled(
-                            iconData: Icons.verified,
-                            controller: verificationCodeController,
-                            hintText: 'Enter verification code',
-                          ),
+                          // const SizedBox(
+                          //   height: 20.0,
+                          // ),
+                          // AppTextFormFiled(
+                          //   iconData: Icons.verified,
+                          //   controller: verificationCodeController,
+                          //   hintText: 'Enter verification code',
+                          // ),
                           const SizedBox(
                             height: 20.0,
                           ),
