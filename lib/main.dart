@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.myTheme,
       title: AppString.appName,
-       home: AddTreatmentPlanScreen(),
+       home: SplashScreen(),
     ));
   }
 }
