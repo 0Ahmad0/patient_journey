@@ -277,10 +277,12 @@ class TrainerInfo {
   };
 }
 
-//WalletChange
+//MedicalReview
 class MedicalReview {
   String id;
   String idUser;
+  String? nameUser;
+  String? typeUser;
   String idChange;
   String text;
   DateTime dateTime;
@@ -290,6 +292,8 @@ class MedicalReview {
     this.id="",
     required this.idUser,
      this.idChange='',
+     this.nameUser='',
+     this.typeUser='',
     required this.text,
     required this.dateTime,
     this.notification=false,
@@ -300,6 +304,8 @@ class MedicalReview {
         id: json['id'],
         idUser: json['idUser'],
         idChange: json['idChange'],
+        nameUser: json['nameUser'],
+        typeUser: json['typeUser'],
         text: json['text'],
         notification: json['notification'],
         dateTime: json['dateTime'].toDate());
@@ -310,6 +316,8 @@ class MedicalReview {
       'id': id,
       'idUser': idUser,
       'idChange': idChange,
+      'nameUser': nameUser,
+      'typeUser': typeUser,
       'text': text,
       'notification': notification,
       'dateTime': dateTime,
@@ -400,6 +408,95 @@ class Medicals {
   }
   factory Medicals.init()=>Medicals(listMedical: []);
 }
+
+
+//Mail
+class Mail {
+  String id;
+  String idUser;
+  String? nameUser;
+  String? typeUser;
+  String message;
+  List<String> files;
+  DateTime dateTime;
+  bool notification;
+
+  Mail({
+    this.id="",
+    required this.idUser,
+    required this.files,
+    this.nameUser='',
+    this.typeUser='',
+    required this.message,
+    required this.dateTime,
+    this.notification=false,
+  });
+
+  factory Mail.fromJson(json) {
+    List<String> temp = [];
+    for (int i = 0; i < json['files'].length; i++) {
+      String tempElement = json['files'][i];
+      temp.add(tempElement);
+    }
+    return Mail(
+        id: json['id'],
+        idUser: json['idUser'],
+        nameUser: json['nameUser'],
+        typeUser: json['typeUser'],
+        message: json['message'],
+        files: temp,
+        notification: json['notification'],
+        dateTime: json['dateTime'].toDate());
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'idUser': idUser,
+      'nameUser': nameUser,
+      'typeUser': typeUser,
+      'message': message,
+      'files': files,
+      'notification': notification,
+      'dateTime': dateTime,
+    };
+  }
+  factory Mail.init(){
+    return Mail(idUser: '', message: '', dateTime: DateTime.now(), files: []);
+  }
+}
+//Mails
+class Mails {
+
+  List<Mail> listMail;
+
+  //DateTime date;
+  Mails({
+    required this.listMail});
+
+  factory Mails.fromJson(json) {
+    List<Mail> temp = [];
+    for (int i = 0; i < json.length; i++) {
+      Mail tempElement = Mail.fromJson(json[i]);
+      tempElement.id = json[i].id;
+      temp.add(tempElement);
+    }
+    return Mails(
+        listMail: temp);
+  }
+
+  Map<String, dynamic> toJson() {
+    List<Map<String, dynamic>> temp = [];
+    for (var element in listMail) {
+      temp.add(element.toJson());
+    }
+    return {
+      'listMail': temp,
+    };
+  }
+  factory Mails.init()=>Mails(listMail: []);
+}
+
 
 
 //Report

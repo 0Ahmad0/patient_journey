@@ -4,6 +4,7 @@ import 'package:patient_journey/common_widgets/app_text_form_filed.dart';
 import 'package:patient_journey/constants/app_colors.dart';
 import 'package:patient_journey/controller/provider/medical_provider.dart';
 import 'package:patient_journey/models/models.dart';
+import 'package:patient_journey/show_add_review_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../common_widgets/constans.dart';
@@ -202,7 +203,7 @@ class BuildMedicals extends StatelessWidget {
                       trailing: IconButton(
                         icon: Icon(Icons.record_voice_over,color: AppColors.white,),
                         onPressed: (){
-                         // Navigator.push(context, MaterialPageRoute(builder: (ctx)=>NotificationScreen()));
+                         Navigator.push(context, MaterialPageRoute(builder: (ctx)=>ShowAndAddReviewScreen(medical: medicals[index],)));
                         },
                       ),
                     ),

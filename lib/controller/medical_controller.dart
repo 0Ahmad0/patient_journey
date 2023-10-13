@@ -58,6 +58,19 @@ class MedicalController{
     Get.back();
     return result;
   }
+  addMedicalReview(BuildContext context,{required Medical? medical,required String review})  async {
+    ProfileProvider profileProvider= Provider.of<ProfileProvider>(context,listen: false);
+    //Const.loading(context);
+    if(medical==null) return;
+    var result;
+       result=await medicalProvider.addMedicalReview(context, medical: medical,medicalReview:
+         MedicalReview(idUser: profileProvider.user.id,nameUser: '${profileProvider.user.firstName}'+' '+'${profileProvider.user.lastName}',typeUser:profileProvider.user.typeUser , text: review, dateTime: DateTime.now()));
+       if(result['status']){
+        // Get.back();
+       }
+    //Get.back();
+    return result;
+  }
   updateMedical(context,{ required Medical medical,PlatformFile? platformFile}) async {
     Const.loading(context);
     var result=await medicalProvider.updateMedical(context,medical: medical,platformFile:platformFile);
@@ -69,11 +82,18 @@ class MedicalController{
     Const.TOAST(context,textToast: FirebaseFun.findTextToast(result['message'].toString()));
     return result;
   }
-
   deleteMedical(context,{ required Medical medical}) async {
     Const.loading(context);
     await medicalProvider.deleteMedical(context,medical: medical);
     Get.back();
+  }
+  deleteMedicalReview(context,{required Medical medical ,required MedicalReview medicalReview}) async {
+    //Const.loading(context);
+    await medicalProvider.deleteMedicalReview(context,medical: medical,medicalReview: medicalReview);
+    //Get.back();
+  }
+  checkReviewForMe(BuildContext context,MedicalReview medicalReview){
+    return context.read<ProfileProvider>().user.id==medicalReview.idUser;
   }
 
 }

@@ -231,6 +231,34 @@ class FirebaseFun{
     return result;
   }
 
+  ///Mail
+  static addMail( {required model.Mail mail}) async {
+    final result= await FirebaseFirestore.instance.collection(AppConstants.collectionMail).add(
+        mail.toJson()
+    ).then(onValueAddMail).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+  static updateMail( {required model.Mail mail}) async {
+    final result= await FirebaseFirestore.instance.collection(AppConstants.collectionMail).doc(
+        mail.id
+    ).update(mail.toJson()).then(onValueUpdateMail).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+  static deleteMail( {required model.Mail mail}) async {
+    final result= await FirebaseFirestore.instance.collection(AppConstants.collectionMail).doc(
+        mail.id
+    ).delete().then(onValueDeleteMail).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+  static fetchAllMail()  async {
+    final result=await FirebaseFirestore.instance.collection(AppConstants.collectionMail)
+        .get()
+        .then((onValueFetchMails))
+        .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+
+
   // ///Report
   // static addReport( {required model.Report report}) async {
   //   final result= await FirebaseFirestore.instance.collection(AppConstants.collectionReport).add(
@@ -438,6 +466,40 @@ class FirebaseFun{
       'body':value.docs
     };
   }
+
+
+  static Future<Map<String,dynamic>>onValueAddMail(value) async{
+    return {
+      'status':true,
+      'message':'Mail successfully add',
+      'body':{}
+    };
+  }
+  static Future<Map<String,dynamic>>onValueUpdateMail(value) async{
+    return {
+      'status':true,
+      'message':'Mail successfully update',
+      'body':{}
+    };
+  }
+  static Future<Map<String,dynamic>>onValueDeleteMail(value) async{
+    return {
+      'status':true,
+      'message':'Mail successfully delete',
+      'body':{}
+    };
+  }
+  static Future<Map<String,dynamic>> onValueFetchMails(value) async{
+    // print(true);
+    print("Mails count : ${value.docs.length}");
+
+    return {
+      'status':true,
+      'message':'Mails successfully fetch',
+      'body':value.docs
+    };
+  }
+
 
   static Future<Map<String,dynamic>>onValueAddReport(value) async{
     return {
@@ -732,6 +794,22 @@ class FirebaseFun{
       String path = basename(platformFile.path??'');
       print(platformFile.path);
       File file =File(platformFile.path??'');
+
+//FirebaseStorage storage = FirebaseStorage.instance.ref().child(path);
+      Reference storage = FirebaseStorage.instance.ref().child("${folder}/${path}");
+      UploadTask storageUploadTask = storage.putFile(file);
+      TaskSnapshot taskSnapshot = await storageUploadTask;
+      String url = await taskSnapshot.ref.getDownloadURL();
+      return url;
+    } catch (ex) {
+      //Const.TOAST( context,textToast:FirebaseFun.findTextToast("Please, upload the image"));
+    }
+  }
+  static Future uploadFile2({required File file, required String folder}) async {
+    try {
+
+      String path = basename(file.path??'');
+      print(file.path);
 
 //FirebaseStorage storage = FirebaseStorage.instance.ref().child(path);
       Reference storage = FirebaseStorage.instance.ref().child("${folder}/${path}");

@@ -6,6 +6,8 @@ import 'package:lottie/lottie.dart';
 import 'package:patient_journey/common_widgets/app_text_form_filed.dart';
 import 'package:patient_journey/constants/app_assets.dart';
 import 'package:patient_journey/constants/app_colors.dart';
+
+import '../controller/mail_controller.dart';
 //import 'package:url_launcher/url_launcher.dart';
 
 class CommunicationScreen extends StatefulWidget {
@@ -18,6 +20,12 @@ class CommunicationScreen extends StatefulWidget {
 class _CommunicationScreenState extends State<CommunicationScreen> {
   final _messageController = TextEditingController();
   List<File> files = [];
+  late MailController mailController;
+  @override
+  void initState() {
+    mailController=MailController(context: context);
+    super.initState();
+  }
   String url(phone,message) {
     if (Platform.isAndroid) {
       // add the [https]
@@ -193,7 +201,14 @@ class _CommunicationScreenState extends State<CommunicationScreen> {
                           borderRadius: BorderRadius.circular(100.0)
                         )
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        if (_messageController.value.text.length>0) {
+
+                          mailController.addMail(context,
+                              _messageController.value.text,
+                              files);
+                        }
+                      },
                       child: const Text('Send Request'),
                     )
                   ],

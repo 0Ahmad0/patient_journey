@@ -67,9 +67,23 @@ class MedicalProvider with ChangeNotifier{
 
      result=await FirebaseFun.updateMedical(medical: medical);
      if(result['status']){
-       Const.TOAST(context,textToast:'Done add review');
+    //   Const.TOAST(context,textToast:'Done add review');
      }else{
        medical.listMedicalReview.remove(medicalReview);
+       Const.TOAST(context,textToast: FirebaseFun.findTextToast(result['message'].toString()));
+     }
+     notifyListeners();
+   return result;
+ }
+ deleteMedicalReview(BuildContext context,{required Medical medical,required MedicalReview medicalReview}) async {
+   medical.listMedicalReview.remove(medicalReview);
+   var result;
+
+     result=await FirebaseFun.updateMedical(medical: medical);
+     if(result['status']){
+      Const.TOAST(context,textToast:'Done remove review');
+     }else{
+       medical.listMedicalReview.add(medicalReview);
        Const.TOAST(context,textToast: FirebaseFun.findTextToast(result['message'].toString()));
      }
      notifyListeners();

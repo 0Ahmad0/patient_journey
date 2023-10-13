@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_journey/constants/app_colors.dart';
 import 'package:patient_journey/controller/medical_controller.dart';
@@ -6,11 +7,33 @@ import 'package:patient_journey/screens/admin/add_medication_screen.dart';
 import 'package:patient_journey/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../../common_widgets/constans.dart';
+import '../../constants/app_constant.dart';
+import '../../controller/mail_controller.dart';
 import '../../controller/provider/profile_provider.dart';
+import '../../models/models.dart';
 
-class AdminHomeScreen extends StatelessWidget {
+class AdminHomeScreen extends StatefulWidget {
   const AdminHomeScreen({super.key});
 
+  @override
+  State<AdminHomeScreen> createState() => _AdminHomeScreenState();
+}
+
+class _AdminHomeScreenState extends State<AdminHomeScreen> {
+  late MailController mailController;
+  var getMails;
+  getMailsFun()  {
+    getMails = FirebaseFirestore.instance.collection(AppConstants.collectionMail)
+        .snapshots();
+    return getMails;
+  }
+  @override
+  void initState() {
+    mailController=MailController(context: context);
+    getMailsFun();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
 
@@ -66,14 +89,55 @@ class AdminHomeScreen extends StatelessWidget {
           ],
         ),
       ),
-      body: ListView.builder(
-        itemCount: 10,
+      body: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              //prints the messages to the screen0
+                stream: getMails,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return
+                      Const.SHOWLOADINGINDECATOR();
+
+                  }
+                  else if (snapshot.connectionState ==
+                      ConnectionState.active) {
+                    if (snapshot.hasError) {
+                      return const Text('Error');
+                    } else if (snapshot.hasData) {
+
+                      //Const.SHOWLOADINGINDECATOR();
+                      mailController.mailProvider.mails.listMail.clear();
+                      if(snapshot.data!.docs!.length>0){
+                        mailController.mailProvider.mails=Mails.fromJson(snapshot.data!.docs!);
+                      }
+
+                      return  buildMails(context,mails:mailController.mailProvider.mails.listMail );
+                      /// }));
+                    } else {
+                      return const Text('Empty data');
+                    }
+                  }
+                  else {
+                    return Text('State: ${snapshot.connectionState}');
+                  }
+                }),
+          ),
+        ],
+      ),
+    );
+  }
+  //ToDo hariri show list from files, but not forget active link for everAll
+  Widget buildMails(BuildContext context,{List<Mail> mails=const []})=>
+      ListView.builder(
+        itemCount: mails.length,
         padding: EdgeInsets.all(12.0),
         itemBuilder: (context, index) {
           return Card(
             child: ListTile(
               leading: CircleAvatar(),
-              title: Text('Person Name ${index + 1}'),
+              title: Text('${mails[index].nameUser} - ${mails[index].typeUser}'),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -84,7 +148,8 @@ class AdminHomeScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
                     child: Text(
-                      'Complaints Complaints Complaints Complaints Complaints Complaints Complaints Complaints Complaints Complaints Complaints Complaints ',
+                       '${mails[index].message}',
+                      //'Complaints Complaints Complaints Complaints Complaints Complaints Complaints Complaints Complaints Complaints Complaints Complaints ',
                       style: TextStyle(color: AppColors.black),
                     ),
                   )
@@ -93,7 +158,5 @@ class AdminHomeScreen extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
-  }
+      );
 }
