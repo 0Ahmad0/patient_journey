@@ -123,7 +123,6 @@ class AuthProvider with ChangeNotifier {
     //var result=await loginWithPhoneNumber(context);
 
     var result = await loginWithField(context);
-
     if (!result['status']) result = await loginWithEmil(context);
     print(result);
     Const.TOAST(context,

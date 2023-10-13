@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:patient_journey/controller/provider/medical_provider.dart';
 import 'package:patient_journey/list_doctors_screen.dart';
 import 'package:patient_journey/screens/admin/admin_home_screen.dart';
 import 'package:patient_journey/screens/home_screen.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
     // Provider<HomeProvider>(create: (_)=>HomeProvider()),
     Provider<AuthProvider>(create: (_) => AuthProvider()),
     Provider<ProfileProvider>(create: (_)=>ProfileProvider()),
+    Provider<MedicalProvider>(create: (_)=>MedicalProvider()),
     // Provider<ProcessProvider>(create: (_)=>ProcessProvider()),
     //
     ],

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:patient_journey/common_widgets/app_button.dart';
@@ -5,6 +7,10 @@ import 'package:patient_journey/common_widgets/app_text_form_filed.dart';
 import 'package:patient_journey/constants/app_assets.dart';
 import 'package:patient_journey/constants/app_colors.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:patient_journey/data/dummy/medical.dart';
+import 'package:patient_journey/models/models.dart';
+
+import '../../controller/medical_controller.dart';
 
 class AddMedicationScreen extends StatefulWidget {
   const AddMedicationScreen({super.key});
@@ -19,6 +25,12 @@ class _AddMedicationScreenState extends State<AddMedicationScreen> {
   final photoMedication = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   FilePickerResult? photoMedicationFile;
+  late MedicalController medicalController;
+  @override
+  void initState() {
+    medicalController=MedicalController(context: context);
+    super.initState();
+  }
   @override
   void dispose() {
     nameMedication.dispose();
@@ -29,6 +41,7 @@ class _AddMedicationScreenState extends State<AddMedicationScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Medication'),
@@ -72,6 +85,7 @@ class _AddMedicationScreenState extends State<AddMedicationScreen> {
                         photoMedicationFile = await FilePicker
                             .platform
                             .pickFiles(type: FileType.image);
+                        
                         if (photoMedicationFile != null) {
                           photoMedication.text =
                               photoMedicationFile!.files.first.name;
@@ -107,8 +121,17 @@ class _AddMedicationScreenState extends State<AddMedicationScreen> {
                 height: 20.0,
               ),
               AppButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {}
+                  onPressed: () async {
+                    ///to create dummy  medicals
+                    // for(Medical medical in MedicalDummy.medicals)
+                    //   await medicalController.medicalProvider.addMedical(context, medical: medical);
+                    if (_formKey.currentState!.validate()) {
+
+                      medicalController.addMedical(context,
+                        nameMedication.value.text,
+                          descriptionMedication.value.text,
+                      photoMedicationFile?.files?.first);
+                    }
                   },
                   text: 'Add Medication')
             ],

@@ -37,5 +37,10 @@ class Const{
         textStyle: getRegularStyle(color: AppColors.white)
     );
   }
+  static SHOWLOADINGINDECATOR() {
+    return Center(
+      child: CircularProgressIndicator(
+      ),
+    );}
 
 }

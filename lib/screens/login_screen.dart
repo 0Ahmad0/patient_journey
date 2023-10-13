@@ -5,6 +5,7 @@ import 'package:patient_journey/common_widgets/app_button.dart';
 import 'package:patient_journey/common_widgets/constans.dart';
 import 'package:patient_journey/constants/app_assets.dart';
 import 'package:patient_journey/constants/app_colors.dart';
+import 'package:patient_journey/controller/utils/create_environment_provider.dart';
 import 'package:patient_journey/screens/sign_up_screen.dart';
 
 import '../common_widgets/app_text_form_filed.dart';
@@ -101,6 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   filed: idController.value.text,
                                   password: passwordController.value.text,
                                 );
+                             ///   CreateEnvironmentProvider().createAdmins(context);
                               }
                             },
                             text: 'Log in'),

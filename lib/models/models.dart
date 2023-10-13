@@ -326,6 +326,7 @@ class Medical {
   String idUser;
   String name;
   String type;
+  String image;
   List<MedicalReview> listMedicalReview;
 
   //DateTime date;
@@ -333,6 +334,7 @@ class Medical {
     this.id="",
     this.name='',
     this.type='',
+    this.image='',
     required this.idUser,
      required this.listMedicalReview});
 
@@ -347,6 +349,7 @@ class Medical {
         idUser: json['idUser'],
         name: json['name'],
         type: json['type'],
+        image: json['image'],
         listMedicalReview: temp);
   }
 
@@ -360,7 +363,8 @@ class Medical {
       'idUser': idUser,
       'name': name,
       'type': type,
-      'listWalletChange': temp,
+      'image': image,
+      'listMedicalReview': temp,
     };
   }
   factory Medical.init()=>Medical(idUser: '',listMedicalReview: []);

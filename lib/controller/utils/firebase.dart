@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -714,6 +715,23 @@ class FirebaseFun{
       String path = basename(image.path);
       print(image.path);
       File file =File(image.path);
+
+//FirebaseStorage storage = FirebaseStorage.instance.ref().child(path);
+      Reference storage = FirebaseStorage.instance.ref().child("${folder}/${path}");
+      UploadTask storageUploadTask = storage.putFile(file);
+      TaskSnapshot taskSnapshot = await storageUploadTask;
+      String url = await taskSnapshot.ref.getDownloadURL();
+      return url;
+    } catch (ex) {
+      //Const.TOAST( context,textToast:FirebaseFun.findTextToast("Please, upload the image"));
+    }
+  }
+  static Future uploadFile({required PlatformFile platformFile, required String folder}) async {
+    try {
+
+      String path = basename(platformFile.path??'');
+      print(platformFile.path);
+      File file =File(platformFile.path??'');
 
 //FirebaseStorage storage = FirebaseStorage.instance.ref().child(path);
       Reference storage = FirebaseStorage.instance.ref().child("${folder}/${path}");

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get_core/src/get_main.dart';
+import 'package:patient_journey/screens/admin/admin_home_screen.dart';
 import 'package:patient_journey/screens/home_screen.dart';
 
 import 'package:provider/provider.dart';
@@ -46,12 +47,20 @@ class AuthController {
 
     Navigator.of(context).pop();
     if (result['status']) {
+      if( [AppConstants.collectionAdmin].contains(authProvider.user.typeUser))
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (ctx) => const HomeScreen(),
+          builder: (ctx) => const AdminHomeScreen(),
         ),
       );
+      else
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (ctx) => const HomeScreen(),
+          ),
+        );
       // Get.off(() => NavbarView(), transition: Transition.circularReveal);
     }
   }
