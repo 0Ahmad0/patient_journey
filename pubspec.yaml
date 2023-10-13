@@ -36,6 +36,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   #Date 11/2018 Pm Am ...etc
+  flutter_launcher_icons:
   intl:
   flutter_svg:
   lottie:
@@ -51,10 +52,6 @@ dependencies:
   get_storage:
   image_picker: ^1.0.4
   flutter_styled_toast: ^2.2.1
-#  firebase_core:
-#  firebase_auth:
-#  firebase_storage:
-#  cloud_firestore:
   get: ^4.6.6
   cloud_firestore: ^4.9.3
   firebase_storage: ^11.2.8
@@ -63,7 +60,10 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/app_logo.png"
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your

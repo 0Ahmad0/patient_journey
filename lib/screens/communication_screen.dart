@@ -6,6 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:patient_journey/common_widgets/app_text_form_filed.dart';
 import 'package:patient_journey/constants/app_assets.dart';
 import 'package:patient_journey/constants/app_colors.dart';
+import 'package:patient_journey/list_doctors_screen.dart';
 
 import '../controller/mail_controller.dart';
 //import 'package:url_launcher/url_launcher.dart';
@@ -49,8 +50,23 @@ class _CommunicationScreenState extends State<CommunicationScreen> {
       body: Column(
         children: [
           Expanded(
-            child: Lottie.asset(
-              AppAssets.communicationIMG,
+            child: Column(
+              children: [
+                const Spacer(),
+                FloatingActionButton.extended(
+                  onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=>ListDoctorsScreen()));
+                  },
+                  label: Text('Chat With Doctor'),
+                  icon: Icon(Icons.chat_bubble),
+                ),
+                Expanded(
+                  flex: 3,
+                  child: Lottie.asset(
+                    AppAssets.communicationIMG,
+                  ),
+                ),
+              ],
             ),
           ),
           Expanded(
