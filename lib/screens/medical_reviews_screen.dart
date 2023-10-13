@@ -1,3 +1,6 @@
+
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_journey/common_widgets/app_text_form_filed.dart';
@@ -161,6 +164,7 @@ class BuildMedicals extends StatelessWidget {
   List<Medical> medicals;
   @override
   Widget build(BuildContext context) {
+
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
