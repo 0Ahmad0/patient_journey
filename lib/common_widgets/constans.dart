@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:lottie/lottie.dart';
 import 'package:patient_journey/constants/app_colors.dart';
 
+import '../constants/app_assets.dart';
 import '../constants/style_manager.dart';
 
 class Const{
@@ -42,5 +44,18 @@ class Const{
       child: CircularProgressIndicator(
       ),
     );}
+
+  static emptyWidget(context,{text='Not Data Yet!'})=>SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Lottie.asset(AppAssets.emptyIMG),
+          Text(text,style: TextStyle(
+              fontSize: MediaQuery.sizeOf(context).width * 0.08,
+              fontWeight: FontWeight.bold
+          ),),
+        ],
+      ));
+
 
 }

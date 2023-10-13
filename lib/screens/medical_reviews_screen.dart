@@ -141,6 +141,8 @@ class _MedicalReviewsScreenState extends State<MedicalReviewsScreen> {
                         }
 
                         return
+                          medicalProvider.medicals.listMedical.isEmpty?
+                              Const.emptyWidget(context,text: "Not Medicals Yet"):
                            BuildMedicals(medicals:medicalProvider.medicals.listMedical ,);
                         /// }));
                       } else {

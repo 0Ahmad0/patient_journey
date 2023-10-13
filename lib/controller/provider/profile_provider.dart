@@ -43,16 +43,18 @@ class ProfileProvider with ChangeNotifier{
   }
    editUser(context) async {
      models.User tempUser= models.User.fromJson(user.toJson());
-     tempUser.email =email.text;
-     tempUser.name=name.text;
-     tempUser.phoneNumber=phoneNumber.text;
-     tempUser.firstName=firstName.text;
-     tempUser.lastName=lastName.text;
-     if(name.text=='');
-     tempUser.name='${firstName.text} ${lastName.text}';
+     tempUser.email =email.value.text;
+     tempUser.name=name.value.text;
+     tempUser.phoneNumber=phoneNumber.value.text;
+     tempUser.firstName=firstName.value.text;
+     tempUser.lastName=lastName.value.text;
+     if(name.value.text=='');
+     tempUser.name='${firstName.value.text} ${lastName.value.text}';
     /// print(tempUser.toJson());
-     var result =await FirebaseFun.updateUserEmail(user: tempUser);
-     if(result['status']){
+     var result;
+     if(user.email!=tempUser.email)
+     result=await FirebaseFun.updateUserEmail(user: tempUser);
+     if(result==null||result['status']){
         result =await FirebaseFun.updateUser(user: tempUser);
        if(result['status']){
          updateUser(user:models.User.fromJson(result['body']));

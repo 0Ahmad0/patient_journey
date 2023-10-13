@@ -258,6 +258,79 @@ class FirebaseFun{
     return result;
   }
 
+  ///Chat
+  static addChat( {required model.Chat chat}) async {
+    final result= await FirebaseFirestore.instance.collection(AppConstants.collectionChat).add(
+        chat.toJson()
+    ).then(onValueAddChat).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+  static deleteChat( {required String idChat}) async {
+    final result =await FirebaseFirestore.instance
+        .collection(AppConstants.collectionChat)
+        .doc(idChat)
+       .delete().then(onValueDeleteChat)
+        .catchError(onError);
+    return result;
+  }
+  static updateChat( {required model.Chat chat}) async {
+    final result= await FirebaseFirestore.instance.collection(AppConstants.collectionChat).doc(
+        chat.id
+    ).update(chat.toJson()).then(onValueUpdateChat).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+  static fetchChatsByIdUser({required List listIdUser})  async {
+    final result=await FirebaseFirestore.instance.collection(AppConstants.collectionChat)
+        .where('listIdUser',arrayContains: listIdUser)
+        .get()
+        .then((onValueFetchChats))
+        .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+
+  static fetchChatsByListIdUser({required List listIdUser})  async {
+    final database = await FirebaseFirestore.instance.collection(AppConstants.collectionChat);
+    Query<Map<String, dynamic>> ref = database;
+
+    listIdUser.forEach( (val) => {
+      ref = database.where('listIdUser' ,arrayContains: val)
+    });
+    final result=
+    ref
+        .get()
+        .then((onValueFetchChats))
+        .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+
+  static addMessage( {required model.Message message,required String idChat}) async {
+    final result =await FirebaseFirestore.instance
+        .collection(AppConstants.collectionChat)
+        .doc(idChat)
+        .collection(AppConstants.collectionMessage).add(
+        message.toJson()
+    ).then(onValueAddMessage)
+        .catchError(onError);
+    return result;
+  }
+  static deleteMessage( {required model.Message message,required String idChat}) async {
+    final result =await FirebaseFirestore.instance
+        .collection(AppConstants.collectionChat)
+        .doc(idChat)
+        .collection(AppConstants.collectionMessage).doc(
+        message.id
+    ).delete().then(onValueDeleteMessage)
+        .catchError(onError);
+    return result;
+  }
+  static fetchLastMessage({required String idChat})  async {
+    final result=await FirebaseFirestore.instance.collection(AppConstants.collectionChat)
+        .doc(idChat).collection(AppConstants.collectionMessage).orderBy('sendingTime',descending: true).get()
+        .then((onValueFetchLastMessage))
+        .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+
 
   // ///Report
   // static addReport( {required model.Report report}) async {
@@ -673,6 +746,13 @@ class FirebaseFun{
     return {
       'status':true,
       'message':'Message successfully add',
+      'body':{}
+    };
+  }
+  static Future<Map<String,dynamic>>onValueDeleteChat(value) async{
+    return {
+      'status':true,
+      'message':'Chat successfully delete',
       'body':{}
     };
   }

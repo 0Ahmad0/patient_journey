@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:patient_journey/controller/provider/chat_provider.dart';
 import 'package:patient_journey/controller/provider/mail_provider.dart';
 import 'package:patient_journey/controller/provider/medical_provider.dart';
 import 'package:patient_journey/list_doctors_screen.dart';
@@ -15,6 +16,7 @@ import 'add_treatment_plan_screen.dart';
 import 'constants/app_strings.dart';
 import 'constants/app_theme.dart';
 import 'controller/provider/auth_provider.dart';
+import 'controller/provider/process_provider.dart';
 import 'controller/provider/profile_provider.dart';
 import 'firebase_options.dart';
 
@@ -41,7 +43,8 @@ class MyApp extends StatelessWidget {
     Provider<ProfileProvider>(create: (_)=>ProfileProvider()),
     Provider<MedicalProvider>(create: (_)=>MedicalProvider()),
     Provider<MailProvider>(create: (_)=>MailProvider()),
-    // Provider<ProcessProvider>(create: (_)=>ProcessProvider()),
+     Provider<ProcessProvider>(create: (_)=>ProcessProvider()),
+     Provider<ChatProvider>(create: (_)=>ChatProvider()),
     //
     ],
       child:GetMaterialApp(

@@ -8,8 +8,10 @@ import 'package:patient_journey/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../common_widgets/constans.dart';
+import '../../common_widgets/picture/cach_picture_widget.dart';
 import '../../constants/app_constant.dart';
 import '../../controller/mail_controller.dart';
+import '../../controller/provider/process_provider.dart';
 import '../../controller/provider/profile_provider.dart';
 import '../../models/models.dart';
 
@@ -113,7 +115,10 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                         mailController.mailProvider.mails=Mails.fromJson(snapshot.data!.docs!);
                       }
 
-                      return  buildMails(context,mails:mailController.mailProvider.mails.listMail );
+                      return
+                        mailController.mailProvider.mails.listMail.isEmpty?
+                        Const.emptyWidget(context,text: "Not Mails Yet"):
+                        buildMails(context,mails:mailController.mailProvider.mails.listMail );
                       /// }));
                     } else {
                       return const Text('Empty data');
@@ -129,21 +134,35 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     );
   }
   //ToDo hariri show list from files, but not forget active link for everAll
-  Widget buildMails(BuildContext context,{List<Mail> mails=const []})=>
-      ListView.builder(
+  Widget buildMails(BuildContext context,{List<Mail> mails=const []}){
+    final size = MediaQuery.sizeOf(context);
+    return ListView.builder(
         itemCount: mails.length,
         padding: EdgeInsets.all(12.0),
         itemBuilder: (context, index) {
-          return Card(
+          return
+            ChangeNotifierProvider<ProcessProvider>.value(
+              value: Provider.of<ProcessProvider>(context),
+              child: Consumer<ProcessProvider>(
+                  builder: (context, value, child)=>
+            Card(
             child: ListTile(
-              leading: CircleAvatar(),
+              leading:   ClipOval(
+                  child: CacheNetworkImage(
+                    photoUrl: '${value.fetchLocalUser(idUser: mails[index].idUser??'')?.photoUrl??''}',
+                    width: size.width / 8.5,
+                    height: size.width / 8.5,
+                    boxFit: BoxFit.fill,
+                    waitWidget: CircleAvatar( ),
+                    errorWidget: CircleAvatar( ),
+                  )),
               title: Text('${mails[index].nameUser} - ${mails[index].typeUser}'),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
-                    child: Text('email@gmail.com'),
+                    child: Text('${value.fetchLocalUser(idUser: mails[index].idUser??'')?.email??''}'),
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -156,7 +175,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                 ],
               ),
             ),
-          );
+          )));
         },
       );
+  }
 }

@@ -10,6 +10,9 @@ import 'package:patient_journey/local/storage.dart';
 import 'package:patient_journey/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 
+import '../common_widgets/constans.dart';
+import '../common_widgets/picture/cach_picture_widget.dart';
+import '../common_widgets/picture/profile_picture_widget.dart';
 import '../controller/provider/profile_provider.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -68,15 +71,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: CircleAvatar(
-                                  
+
                                   backgroundColor: AppColors.grey.withOpacity(.75),
                                   radius: size.width / 5,
                                   child: userImage == null
-                                      ? Icon(
-                                          Icons.person,
-                                          color: AppColors.white,
-                                          size: size.width / 3,
-                                        )
+                                      ? ClipRRect( child :
+                                  CacheNetworkImage(
+                                    photoUrl:   // "https://th.bing.com/th/id/R.1b3a7efcd35343f64a9ae6ad5b5f6c52?rik=HGgUvyvtG4jbAQ&riu=http%3a%2f%2fwww.riyadhpost.live%2fuploads%2f7341861f7f918c109dfc33b73d8356b2.jpg&ehk=3Z4lADOKvoivP8Tbzi2Y56dxNrCWd0r7w7CHQEvpuUg%3d&risl=&pid=ImgRaw&r=0",
+                                    '${value.user.photoUrl}',
+                                    width: size.width / 2.5,
+                                    height: size.width / 2.5,
+                                    boxFit: BoxFit.cover,
+                                    waitWidget: WidgetProfilePicture(
+                                      name: value.user.name,
+                                      radius: size.width / 5,
+                                      fontSize: size.width / 5,
+                                      backgroundColor: AppColors.grey,
+                                      textColor: AppColors.primary,
+                                    ),
+                                    errorWidget: WidgetProfilePicture(
+                                      name: value.user.name,
+                                      radius: size.width / 5,
+                                      fontSize: size.width / 5,
+                                      backgroundColor: AppColors.green,
+                                      textColor: AppColors.primary,
+                                    ),
+                                  )
+                                  )
                                       : ClipRRect(
                           borderRadius: BorderRadius.circular(size.width / 2.5),
                                         child: Image.file(
@@ -85,7 +106,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           width: size.width / 2.5,
                                           height: size.width / 2.5,
                                           ),
-                                      ),
+                                      )
+
+
+                          //         Icon(
+                          //                 Icons.person,
+                          //                 color: AppColors.white,
+                          //                 size: size.width / 3,
+                          //               )
+                          //             : ClipRRect(
+                          // borderRadius: BorderRadius.circular(size.width / 2.5),
+                          //               child: Image.file(
+                          //                   File(userImage!.path),
+                          //                 fit: BoxFit.fill,
+                          //                 width: size.width / 2.5,
+                          //                 height: size.width / 2.5,
+                          //                 ),
+                          //             ),
                                 ),
                               ),
                               Positioned(
@@ -150,28 +187,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             borderRadius: BorderRadius.circular(24.0)),
                         child: Column(
                           children: [
-                            AppTextFormFiled(
-                              iconData: Icons.person,
-                              controller: nameController,
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: AppTextFormFiled(
+                                    iconData: Icons.person,
+                                    controller: value.firstName,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 20.0,
+                                ),
+                                Expanded(
+                                  child: AppTextFormFiled(
+                                    iconData: Icons.person,
+                                    controller: value.lastName,
+                                  ),
+                                ),
+                              ],
                             ),
                             const SizedBox(
                               height: 20.0,
                             ),
                             AppTextFormFiled(
                               iconData: Icons.email_outlined,
-                              controller: emailController,
+                              controller: value.email,
                             ),
                             const SizedBox(
                               height: 20.0,
                             ),
                             AppTextFormFiled(
                               iconData: Icons.phone_android_outlined,
-                              controller: phoneController,
+                              controller: value.phoneNumber,
                             ),
                             const SizedBox(
                               height: 20.0,
                             ),
                             AppTextFormFiled(
+                              readOnly: true,
                               iconData: Icons.merge_type,
                               controller: typeController,
                             ),
@@ -182,7 +235,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         height: 40.0,
                       ),
                       AppButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          Const.loading(context);
+                          if(userImage!=null)
+                            await value.uploadImage(context, userImage!);
+
+                          await value.editUser(context);
+                          Navigator.of(context).pop();
+                        },
                         text: 'Edit Profile',
                         icon: const Icon(Icons.edit),
                       ),

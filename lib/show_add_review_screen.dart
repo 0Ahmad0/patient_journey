@@ -7,10 +7,13 @@ import 'package:patient_journey/constants/app_assets.dart';
 import 'package:patient_journey/constants/app_colors.dart';
 import 'package:patient_journey/controller/medical_controller.dart';
 import 'package:patient_journey/models/models.dart';
+import 'package:provider/provider.dart';
 
 import 'common_widgets/constans.dart';
+import 'common_widgets/picture/cach_picture_widget.dart';
 import 'constants/app_constant.dart';
 import 'controller/provider/medical_provider.dart';
+import 'controller/provider/process_provider.dart';
 
 class ShowAndAddReviewScreen extends StatefulWidget {
    ShowAndAddReviewScreen({super.key,required this.medical});
@@ -43,10 +46,10 @@ class _ShowAndAddReviewScreenState extends State<ShowAndAddReviewScreen> {
     messageController.dispose();
     super.dispose();
   }
-
+var size;
   @override
   Widget build(BuildContext context) {
-
+     size = MediaQuery.sizeOf(context);
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
@@ -140,9 +143,21 @@ class _ShowAndAddReviewScreenState extends State<ShowAndAddReviewScreen> {
       ):ListView.separated(
         reverse: true,
         itemCount: reviewsList.length,
-        itemBuilder: (_, index) => ListTile(
-          leading: CircleAvatar(
-          ),
+        itemBuilder: (_, index) =>
+        ChangeNotifierProvider<ProcessProvider>.value(
+            value: Provider.of<ProcessProvider>(context),
+            child: Consumer<ProcessProvider>(
+                builder: (context, value, child)=>
+            ListTile(
+          leading: ClipOval(
+              child: CacheNetworkImage(
+                photoUrl: '${value.fetchLocalUser(idUser: reviewsList[index].idUser??'')?.photoUrl??''}',
+                width: size.width / 8.5,
+                height: size.width / 8.5,
+                boxFit: BoxFit.fill,
+                waitWidget: CircleAvatar( ),
+                errorWidget: CircleAvatar( ),
+              )),
           title: Text('${reviewsList[index].nameUser} - ${reviewsList[index].typeUser}'),
           subtitle: Text(reviewsList[index].text),
           trailing: Visibility(
@@ -181,6 +196,6 @@ class _ShowAndAddReviewScreenState extends State<ShowAndAddReviewScreen> {
               },
             ),
           ),
-        ), separatorBuilder: (BuildContext context, int index)=>Divider(),
+        ))), separatorBuilder: (BuildContext context, int index)=>Divider(),
       );
 }
