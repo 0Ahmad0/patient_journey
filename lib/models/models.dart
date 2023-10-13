@@ -360,6 +360,20 @@ class Medical {
         image: json['image'],
         listMedicalReview: temp);
   }
+  factory Medical.fromJsonDoc(json,id) {
+    List<MedicalReview> temp = [];
+    for (int i = 0; i < json['listMedicalReview'].length; i++) {
+      MedicalReview tempElement = MedicalReview.fromJson(json['listMedicalReview'][i]);
+      temp.add(tempElement);
+    }
+    return Medical(
+        id: (json['id']=='')?id:json['id'],
+        idUser: json['idUser'],
+        name: json['name'],
+        type: json['type'],
+        image: json['image'],
+        listMedicalReview: temp);
+  }
 
   Map<String, dynamic> toJson() {
     List<Map<String, dynamic>> temp = [];

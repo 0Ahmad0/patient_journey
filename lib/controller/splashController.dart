@@ -50,7 +50,8 @@ class SplashController{
           );
         }
 
-      }else{
+      }
+      else{
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(

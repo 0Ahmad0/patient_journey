@@ -29,6 +29,7 @@ class _ShowAndAddReviewScreenState extends State<ShowAndAddReviewScreen> {
     getMedical = FirebaseFirestore.instance.collection(AppConstants.collectionMedical).doc(
       widget.medical.id
     ).snapshots();
+
     return getMedical;
   }
   @override
@@ -45,6 +46,7 @@ class _ShowAndAddReviewScreenState extends State<ShowAndAddReviewScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
@@ -69,8 +71,9 @@ class _ShowAndAddReviewScreenState extends State<ShowAndAddReviewScreen> {
                     } else if (snapshot.hasData) {
                       Const.SHOWLOADINGINDECATOR();
                       reviewsList.clear();
+
                       if(snapshot.data!=null){
-                        medicalController.medicalProvider.medical=Medical.fromJson(snapshot.data!.data()!);
+                        medicalController.medicalProvider.medical=Medical.fromJsonDoc(snapshot.data!.data(),snapshot.data!.id);
                         reviewsList=medicalController.medicalProvider.medical.listMedicalReview;
                       }
 
