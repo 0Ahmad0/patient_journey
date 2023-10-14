@@ -153,8 +153,8 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                     width: size.width / 8.5,
                     height: size.width / 8.5,
                     boxFit: BoxFit.fill,
-                    waitWidget: CircleAvatar( ),
-                    errorWidget: CircleAvatar( ),
+                    waitWidget: CircleAvatar(child: CircularProgressIndicator(), ),
+                    errorWidget: CircleAvatar( child: Icon(Icons.error_outline_rounded),),
                   )),
               title: Text('${mails[index].nameUser} - ${mails[index].typeUser}'),
               subtitle: Column(

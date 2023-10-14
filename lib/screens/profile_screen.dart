@@ -165,6 +165,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                       leading: Icon(Icons.image),
                                                       title: Text('Pick From Gallery'),
                                                     ),
+                                                    ListTile(
+                                                      onTap: () async {
+                                                        //ToDo : Remove Photo
+                                                        Navigator.pop(context);
+                                                      },
+                                                      leading: Icon(Icons.highlight_remove_rounded),
+                                                      title: Text('Delete Photo'),
+                                                    ),
                                                   ],
                                                 ),
                                               );

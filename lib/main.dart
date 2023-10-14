@@ -6,13 +6,13 @@ import 'package:patient_journey/controller/provider/mail_provider.dart';
 import 'package:patient_journey/controller/provider/medical_provider.dart';
 import 'package:patient_journey/list_doctors_screen.dart';
 import 'package:patient_journey/screens/admin/admin_home_screen.dart';
+import 'package:patient_journey/screens/doctor/patient_screen.dart';
 import 'package:patient_journey/screens/home_screen.dart';
 import 'package:patient_journey/screens/splash_screen.dart';
 import 'package:patient_journey/screens/verifey_email.dart';
 import 'package:patient_journey/show_add_review_screen.dart';
 import 'package:provider/provider.dart';
 
-import 'add_treatment_plan_screen.dart';
 import 'constants/app_strings.dart';
 import 'constants/app_theme.dart';
 import 'controller/provider/auth_provider.dart';
@@ -51,7 +51,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.myTheme,
       title: AppString.appName,
-       home: SplashScreen(),
+       // home: SplashScreen(),
+       home: PatientScreen(),
     ));
   }
 }
