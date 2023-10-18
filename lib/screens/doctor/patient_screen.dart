@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:patient_journey/constants/app_constant.dart';
 import 'package:patient_journey/controller/medical_controller.dart';
 import 'package:patient_journey/controller/patient_diagnosis_controller.dart';
+import 'package:patient_journey/controller/provider/profile_provider.dart';
 import 'package:patient_journey/models/models.dart';
 import 'package:patient_journey/screens/doctor/add_new_patient_screen.dart';
 import 'package:patient_journey/screens/doctor/add_plan_and_preformed_surgeries_screen.dart';
@@ -25,7 +26,7 @@ class _PatientScreenState extends State<PatientScreen> {
   late PatientDiagnosisController patientDiagnosisController;
   getPatientDiagnosisFun()  {
     getPatientDiagnosis = FirebaseFirestore.instance.collection(AppConstants.collectionPatientDiagnosis)
-        .snapshots();
+        .where('idDoctors',isEqualTo: context.read<ProfileProvider>().user.id).snapshots();
     return getPatientDiagnosis;
   }
   @override
