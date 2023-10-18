@@ -60,8 +60,8 @@ class ProcessProvider with ChangeNotifier{
   }
   fetchUsers(context,{required List<String> idUsers}) async{
     for(String idUser in idUsers)
-      await fetchUser(context, idUser: idUser);
-    notifyListeners();
+       fetchUser(context, idUser: idUser);
+   // notifyListeners();
   }
   widgetNameUser(context,{required String idUser}){
 

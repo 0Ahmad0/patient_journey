@@ -119,7 +119,7 @@ class _AddChatScreenState extends State<AddChatScreen> {
                   );
 
                 },
-                icon: Icon(Icons.add_circle,color: AppColors.primary,),
+                icon: Icon(Icons.chat,color: AppColors.primary,),
               ),
             ),
           ),

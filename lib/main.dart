@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 import 'constants/app_strings.dart';
 import 'constants/app_theme.dart';
 import 'controller/provider/auth_provider.dart';
+import 'controller/provider/patient_diagnosis_provider.dart';
 import 'controller/provider/process_provider.dart';
 import 'controller/provider/profile_provider.dart';
 import 'firebase_options.dart';
@@ -45,14 +46,15 @@ class MyApp extends StatelessWidget {
     Provider<MailProvider>(create: (_)=>MailProvider()),
      Provider<ProcessProvider>(create: (_)=>ProcessProvider()),
      Provider<ChatProvider>(create: (_)=>ChatProvider()),
+     Provider<PatientDiagnosisProvider>(create: (_)=>PatientDiagnosisProvider()),
     //
     ],
       child:GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: AppTheme.myTheme,
       title: AppString.appName,
-       // home: SplashScreen(),
-       home: PatientScreen(),
+        home: SplashScreen(),
+       //home: PatientScreen(),
     ));
   }
 }

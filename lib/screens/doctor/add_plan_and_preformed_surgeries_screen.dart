@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:patient_journey/models/models.dart';
 import 'package:patient_journey/screens/doctor/add_preformed_surgeries_screen.dart';
 import 'package:patient_journey/screens/doctor/add_treatment_plan_screen.dart';
 
 class AddPlanAndPreformedSurgeriesScreen extends StatelessWidget {
-  const AddPlanAndPreformedSurgeriesScreen({super.key});
-
+   AddPlanAndPreformedSurgeriesScreen({super.key, this.patientDiagnosis});
+  PatientDiagnosis? patientDiagnosis;
   @override
   Widget build(BuildContext context) {
+
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -26,8 +28,8 @@ class AddPlanAndPreformedSurgeriesScreen extends StatelessWidget {
           ),
         ),
         body: TabBarView(children: [
-          AddTreatmentPlanScreen(),
-          AddPreformedSurgeriesScreen(),
+          AddTreatmentPlanScreen(patientDiagnosis:patientDiagnosis),
+          AddPreformedSurgeriesScreen(patientDiagnosis:patientDiagnosis),
         ]),
       ),
     );

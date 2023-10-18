@@ -6,10 +6,14 @@ import 'package:intl/intl.dart';
 import 'package:patient_journey/common_widgets/app_text_form_filed.dart';
 import 'package:patient_journey/common_widgets/constans.dart';
 import 'package:patient_journey/constants/app_colors.dart';
+import 'package:patient_journey/controller/patient_diagnosis_controller.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+import '../../models/models.dart';
+
 class AddPreformedSurgeriesScreen extends StatefulWidget {
-  const AddPreformedSurgeriesScreen({super.key});
+   AddPreformedSurgeriesScreen({super.key, this.patientDiagnosis});
+  PatientDiagnosis? patientDiagnosis;
 
   @override
   State<AddPreformedSurgeriesScreen> createState() => _AddPreformedSurgeriesScreenState();
@@ -22,6 +26,19 @@ class _AddPreformedSurgeriesScreenState extends State<AddPreformedSurgeriesScree
   final clinicPerformedController = TextEditingController();
   final notesPerformedController = TextEditingController();
 
+  bool addOrEdit=true;
+  @override
+  void initState() {
+
+    addOrEdit=widget.patientDiagnosis?.preformedSurgeries==null;
+    namePerformedController.text=widget.patientDiagnosis?.preformedSurgeries?.namePerformed??'';
+    if(widget.patientDiagnosis?.preformedSurgeries?.datePerformed!=null)
+    datePerformedController.text=DateFormat.yMd().format(widget.patientDiagnosis!.preformedSurgeries!.datePerformed!);
+    locationPerformedController.text=widget.patientDiagnosis?.preformedSurgeries?.locationPerformed??'';
+    clinicPerformedController.text=widget.patientDiagnosis?.preformedSurgeries?.clinicPerformed??'';
+    notesPerformedController.text=widget.patientDiagnosis?.preformedSurgeries?.notesPerformed??'';
+    super.initState();
+  }
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -41,10 +58,22 @@ class _AddPreformedSurgeriesScreenState extends State<AddPreformedSurgeriesScree
         icon: const Icon(Icons.add),
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-
+            addOrEdit?
+            PatientDiagnosisController(context: context).addPreformedSurgeries(context, patientDiagnosis: widget.patientDiagnosis!,
+                namePerformed: namePerformedController.value.text, notesPerformed: notesPerformedController.value.text,
+                locationPerformed: locationPerformedController.value.text, clinicPerformed: clinicPerformedController.value.text,
+                datePerformed: DateFormat.yMd().parse(datePerformedController.value.text))
+                :{
+              widget.patientDiagnosis!.preformedSurgeries?.namePerformed=namePerformedController.value.text,
+              widget.patientDiagnosis!.preformedSurgeries?.clinicPerformed=clinicPerformedController.value.text,
+              widget.patientDiagnosis!.preformedSurgeries?.notesPerformed=notesPerformedController.value.text,
+              widget.patientDiagnosis!.preformedSurgeries?.locationPerformed=locationPerformedController.value.text,
+              widget.patientDiagnosis!.preformedSurgeries?.datePerformed= DateFormat.yMd().parse(datePerformedController.value.text),
+              PatientDiagnosisController(context: context).updatePreformedSurgeries(context, patientDiagnosis: widget.patientDiagnosis!,)
+            };
           }
         },
-        label: const Text('Add'),
+        label:  Text(addOrEdit?'Add':'Edit'),
       ),
       body: Form(
         key: _formKey,

@@ -4,10 +4,15 @@ import 'package:patient_journey/constants/app_assets.dart';
 import 'package:patient_journey/constants/app_colors.dart';
 import 'package:patient_journey/screens/appointments_screen.dart';
 import 'package:patient_journey/screens/communication_screen.dart';
+import 'package:patient_journey/screens/doctor/patient_screen.dart';
 import 'package:patient_journey/screens/medical_files_screen.dart';
 import 'package:patient_journey/screens/medical_reviews_screen.dart';
 import 'package:patient_journey/screens/notification_screen.dart';
 import 'package:patient_journey/screens/profile_screen.dart';
+import 'package:provider/provider.dart';
+
+import '../constants/app_constant.dart';
+import '../controller/provider/profile_provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -49,25 +54,52 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    HomeItem(
-                      text: 'Appointments',
-                      child: CircleAvatar(
-                        radius: 30.0,
-                        backgroundColor: AppColors.white,
-                        child: Icon(
-                          Icons.date_range,
-                          size: 40.0,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (ctx) => AppointmentsScreen(),
+                    ///1
+                    Visibility(
+                       visible: [AppConstants.collectionPatient].contains(context.read<ProfileProvider>().user.typeUser),
+                      child: HomeItem(
+                        text: 'Appointments',
+                        child: CircleAvatar(
+                          radius: 30.0,
+                          backgroundColor: AppColors.white,
+                          child: Icon(
+                            Icons.date_range,
+                            size: 40.0,
                           ),
-                        );
-                      },
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => AppointmentsScreen(),
+                            ),
+                          );
+                        },
+                      ),
                     ),
+                    Visibility(
+                      visible: [AppConstants.collectionDoctor].contains(context.read<ProfileProvider>().user.typeUser),
+                      child: HomeItem(
+                        text: 'Patients',
+                        child: CircleAvatar(
+                          radius: 30.0,
+                          backgroundColor: AppColors.white,
+                          child: Icon(
+                            Icons.date_range,
+                            size: 40.0,
+                          ),
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (ctx) => PatientScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    ///2
                     HomeItem(
                       text: 'Medical Reviews',
                       child: CircleAvatar(
@@ -87,6 +119,7 @@ class HomeScreen extends StatelessWidget {
                         );
                       },
                     ),
+                    ///3
                     HomeItem(
                       text: 'Communication',
                       child: CircleAvatar(
@@ -106,21 +139,25 @@ class HomeScreen extends StatelessWidget {
                                 builder: (ctx) => CommunicationScreen()));
                       },
                     ),
-                    HomeItem(
-                      text: 'Mediacal file',
-                      child: CircleAvatar(
-                        radius: 30.0,
-                        backgroundColor: AppColors.white,
-                        child: SvgPicture.asset(
-                          AppAssets.medicalIMG,
-                          width: 40.0,
-                          height: 40.0,
-                          color: AppColors.primary,
+                    ///4
+                    Visibility(
+    visible: [AppConstants.collectionPatient].contains(context.read<ProfileProvider>().user.typeUser),
+                      child: HomeItem(
+                        text: 'Mediacal file',
+                        child: CircleAvatar(
+                          radius: 30.0,
+                          backgroundColor: AppColors.white,
+                          child: SvgPicture.asset(
+                            AppAssets.medicalIMG,
+                            width: 40.0,
+                            height: 40.0,
+                            color: AppColors.primary,
+                          ),
                         ),
+                        onTap: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (ctx)=>MedicalFilesScreen()));
+                        },
                       ),
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (ctx)=>MedicalFilesScreen()));
-                      },
                     ),
                   ],
                 ),

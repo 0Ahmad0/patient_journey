@@ -52,7 +52,7 @@ class _ListDoctorsScreenState extends State<ListDoctorsScreen> {
         ),
       ),
       appBar: AppBar(
-        title: const Text('Doctors'),
+        title: const Text('Chats'),
       ),
       body:
       StreamBuilder<QuerySnapshot>(
@@ -98,13 +98,14 @@ class _ListDoctorsScreenState extends State<ListDoctorsScreen> {
   Widget buildListChat(BuildContext context,List<Chat> chats){
     final size = MediaQuery.sizeOf(context);
     final recId=context.read<ChatProvider>().getIdUserOtherFromList(context, context.read<ChatProvider>().chat.listIdUser);
-
     return
       ChangeNotifierProvider<ProcessProvider>.value(
           value: Provider.of<ProcessProvider>(context),
           child: Consumer<ProcessProvider>(
           builder: (context, value, child){
 
+
+           //  value.fetchUser(context, idUser: recId??'');
             return ListView.builder(
       itemCount: chats.length,
       padding: const EdgeInsets.all(8.0),

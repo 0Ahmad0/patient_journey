@@ -6,10 +6,14 @@ import 'package:intl/intl.dart';
 import 'package:patient_journey/common_widgets/app_text_form_filed.dart';
 import 'package:patient_journey/common_widgets/constans.dart';
 import 'package:patient_journey/constants/app_colors.dart';
+import 'package:patient_journey/controller/patient_diagnosis_controller.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+import '../../models/models.dart';
+
 class AddTreatmentPlanScreen extends StatefulWidget {
-  const AddTreatmentPlanScreen({super.key});
+   AddTreatmentPlanScreen({super.key, this.patientDiagnosis});
+  PatientDiagnosis? patientDiagnosis;
 
   @override
   State<AddTreatmentPlanScreen> createState() => _AddTreatmentPlanScreenState();
@@ -20,7 +24,17 @@ class _AddTreatmentPlanScreenState extends State<AddTreatmentPlanScreen> {
   final clinicPlanController = TextEditingController();
   final diseasePlanController = TextEditingController();
   final treatmentPlanController = TextEditingController();
-
+  bool addOrEdit=true;
+@override
+  void initState() {
+  addOrEdit=widget.patientDiagnosis?.treatmentPlan==null;
+    namePlanController.text=widget.patientDiagnosis?.treatmentPlan?.namePlan??'';
+    clinicPlanController.text=widget.patientDiagnosis?.treatmentPlan?.clinicPlan??'';
+    diseasePlanController.text=widget.patientDiagnosis?.treatmentPlan?.diseasePlan??'';
+    treatmentPlanController.text=widget.patientDiagnosis?.treatmentPlan?.treatmentPlan??'';
+    appointments=widget.patientDiagnosis?.treatmentPlan?.appointments??[];
+    super.initState();
+  }
   final _formKey = GlobalKey<FormState>();
 
 
@@ -45,10 +59,23 @@ class _AddTreatmentPlanScreenState extends State<AddTreatmentPlanScreen> {
         icon: const Icon(Icons.add),
         onPressed: () {
           if (_formKey.currentState!.validate()) {
+            addOrEdit?
+            PatientDiagnosisController(context: context).addTreatmentPlan(context, patientDiagnosis: widget.patientDiagnosis!
+                , namePlan: namePlanController.value.text, clinicPlan: clinicPlanController.value.text
+                , treatmentPlan: treatmentPlanController.value.text, diseasePlan: diseasePlanController.value.text
+                , testFiles: myTestFiles, xRayFiles: myXRayFiles, appointments: appointments)
+            :{
+              widget.patientDiagnosis!.treatmentPlan?.namePlan=namePlanController.value.text,
+              widget.patientDiagnosis!.treatmentPlan?.clinicPlan=clinicPlanController.value.text,
+              widget.patientDiagnosis!.treatmentPlan?.treatmentPlan=treatmentPlanController.value.text,
+              widget.patientDiagnosis!.treatmentPlan?.diseasePlan=diseasePlanController.value.text,
+              PatientDiagnosisController(context: context).updateTreatmentPlan(context, patientDiagnosis: widget.patientDiagnosis!,
+                testFiles: myTestFiles, xRayFiles: myXRayFiles, appointments: appointments)
+            };
 
           }
         },
-        label: const Text('Add'),
+        label:  Text(addOrEdit?'Add':'Edit'),
       ),
       body: Form(
         key: _formKey,
@@ -97,7 +124,7 @@ class _AddTreatmentPlanScreenState extends State<AddTreatmentPlanScreen> {
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: SfDateRangePicker(
-
+                                  initialSelectedDates: appointments,
                                   onSelectionChanged: (value){
                                     appointments = value.value;
                                   },

@@ -24,7 +24,7 @@ class AuthProvider with ChangeNotifier {
   var password = TextEditingController();
   var confirmPassword = TextEditingController();
   String typeUser = AppConstants.collectionPatient;
-  List<String> listTypeUserWithActive = [AppConstants.collectionDoctor];
+  List<String> listTypeUserWithActive = [];//[AppConstants.collectionDoctor];
   User user = User(
       id: "id",
       uid: "uid",
@@ -199,7 +199,6 @@ class AuthProvider with ChangeNotifier {
     final profileProvider =
         Provider.of<ProfileProvider>(context, listen: false);
     var result = resultUserAfterLog;
-
     if (result['status']) {
       if (listTypeUserWithActive.contains(result['body']['typeUser']) &&
           !result['body']['active'])

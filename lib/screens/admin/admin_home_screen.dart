@@ -5,6 +5,7 @@ import 'package:patient_journey/controller/medical_controller.dart';
 import 'package:patient_journey/local/storage.dart';
 import 'package:patient_journey/screens/admin/add_medication_screen.dart';
 import 'package:patient_journey/screens/login_screen.dart';
+import 'package:patient_journey/screens/medical_reviews_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../common_widgets/constans.dart';
@@ -73,7 +74,24 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
               },
               leading: Icon(Icons.add),
               title: Text('Add Medication'),
+            ),
+            ListTile(
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => MedicalReviewsScreen(),
+                    // builder: (_) => AddMedicationScreen(),
+                  ),
+                );
+              },
+              leading: Icon(Icons.medical_information_outlined),
+              title: Text('Medical Reviews'),
+              // title: Text('Add Medication'),
             )
+
+
             ,ListTile(
               onTap: () {
                  AppStorage.depose();
@@ -144,8 +162,9 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
             ChangeNotifierProvider<ProcessProvider>.value(
               value: Provider.of<ProcessProvider>(context),
               child: Consumer<ProcessProvider>(
-                  builder: (context, value, child)=>
-            Card(
+                  builder: (context, value, child){
+                    value.fetchLocalUser(idUser: mails[index].idUser??'');
+            return Card(
             child: ListTile(
               leading:   ClipOval(
                   child: CacheNetworkImage(
@@ -156,7 +175,9 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                     waitWidget: CircleAvatar(child: CircularProgressIndicator(), ),
                     errorWidget: CircleAvatar( child: Icon(Icons.error_outline_rounded),),
                   )),
-              title: Text('${mails[index].nameUser} - ${mails[index].typeUser}'),
+              title: Text(
+                  '${mails[index].nameUser} - ${mails[index].typeUser}'
+              ),
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -175,7 +196,7 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                 ],
               ),
             ),
-          )));
+          );}));
         },
       );
   }

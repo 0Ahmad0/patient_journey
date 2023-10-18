@@ -76,7 +76,7 @@ class MedicalController{
     var result=await medicalProvider.updateMedical(context,medical: medical,platformFile:platformFile);
     Get.back();
     if(result['status']){
-      // Get.back();
+      Get.back();
       // Get.back();
     }
     Const.TOAST(context,textToast: FirebaseFun.findTextToast(result['message'].toString()));

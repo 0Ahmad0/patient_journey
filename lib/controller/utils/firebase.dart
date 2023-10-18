@@ -231,6 +231,35 @@ class FirebaseFun{
     return result;
   }
 
+  ///PatientDiagnosis
+  static addPatientDiagnosis( {required model.PatientDiagnosis patientDiagnosis}) async {
+    final result= await FirebaseFirestore.instance.collection(AppConstants.collectionPatientDiagnosis).add(
+        patientDiagnosis.toJson()
+    ).then(onValueAddPatientDiagnosis).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+  static updatePatientDiagnosis( {required model.PatientDiagnosis patientDiagnosis}) async {
+    final result= await FirebaseFirestore.instance.collection(AppConstants.collectionPatientDiagnosis).doc(
+        patientDiagnosis.id
+    ).update(patientDiagnosis.toJson()).then(onValueUpdatePatientDiagnosis).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+  static deletePatientDiagnosis( {required model.PatientDiagnosis patientDiagnosis}) async {
+    final result= await FirebaseFirestore.instance.collection(AppConstants.collectionPatientDiagnosis).doc(
+        patientDiagnosis.id
+    ).delete().then(onValueDeletePatientDiagnosis).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+
+  static fetchAllPatientDiagnosis()  async {
+    final result=await FirebaseFirestore.instance.collection(AppConstants.collectionPatientDiagnosis)
+        .get()
+        .then((onValueFetchPatientDiagnosis))
+        .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+
+
   ///Mail
   static addMail( {required model.Mail mail}) async {
     final result= await FirebaseFirestore.instance.collection(AppConstants.collectionMail).add(
@@ -287,7 +316,6 @@ class FirebaseFun{
         .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
     return result;
   }
-
   static fetchChatsByListIdUser({required List listIdUser})  async {
     final database = await FirebaseFirestore.instance.collection(AppConstants.collectionChat);
     Query<Map<String, dynamic>> ref = database;
@@ -536,6 +564,39 @@ class FirebaseFun{
     return {
       'status':true,
       'message':'Medicals successfully fetch',
+      'body':value.docs
+    };
+  }
+
+
+  static Future<Map<String,dynamic>>onValueAddPatientDiagnosis(value) async{
+    return {
+      'status':true,
+      'message':'PatientDiagnosis successfully add',
+      'body':{}
+    };
+  }
+  static Future<Map<String,dynamic>>onValueUpdatePatientDiagnosis(value) async{
+    return {
+      'status':true,
+      'message':'PatientDiagnosis successfully update',
+      'body':{}
+    };
+  }
+  static Future<Map<String,dynamic>>onValueDeletePatientDiagnosis(value) async{
+    return {
+      'status':true,
+      'message':'PatientDiagnosis successfully delete',
+      'body':{}
+    };
+  }
+  static Future<Map<String,dynamic>> onValueFetchPatientDiagnosis(value) async{
+    // print(true);
+    print("PatientDiagnoses count : ${value.docs.length}");
+
+    return {
+      'status':true,
+      'message':'PatientDiagnoses successfully fetch',
       'body':value.docs
     };
   }

@@ -424,6 +424,236 @@ class Medicals {
 }
 
 
+//PatientDiagnosis
+class PatientDiagnosis {
+  String id;
+  String idDoctor;
+  String idPatient;
+  TreatmentPlan? treatmentPlan;
+  PreformedSurgeries? preformedSurgeries;
+
+  //DateTime date;
+  PatientDiagnosis({
+    this.id="",
+    required this.idDoctor,
+    required this.idPatient,
+     this.treatmentPlan,
+     this.preformedSurgeries
+
+  });
+
+  factory PatientDiagnosis.fromJson(json) {
+    return PatientDiagnosis(
+        id: (json['id']=='')?json.id:json['id'],
+        idPatient: json['idPatient'],
+        idDoctor: json['idDoctor'],
+        treatmentPlan:json['treatmentPlan']==null?null: TreatmentPlan.fromJson(json['treatmentPlan']),
+        preformedSurgeries:json['preformedSurgeries']==null?null: PreformedSurgeries.fromJson(json['preformedSurgeries'])
+    );
+  }
+  factory PatientDiagnosis.fromJsonDoc(json,id) {
+    return PatientDiagnosis(
+        id: (json['id']=='')?id:json['id'],
+    idPatient: json['idPatient'],
+    idDoctor: json['idDoctor'],
+        treatmentPlan: json['treatmentPlan']==null?null:TreatmentPlan.fromJson(json['treatmentPlan']),
+        preformedSurgeries: json['preformedSurgeries']==null?null:PreformedSurgeries.fromJson(json['preformedSurgeries']));
+  }
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'idDoctor': idDoctor,
+      'idPatient': idPatient,
+      'treatmentPlan': treatmentPlan?.toJson()??null,
+      'preformedSurgeries': preformedSurgeries?.toJson()??null,
+    };
+  }
+  factory PatientDiagnosis.init()=>PatientDiagnosis(idPatient: '',idDoctor:'',);
+}
+//PatientDiagnoses
+class PatientDiagnoses {
+
+  List<PatientDiagnosis> listPatientDiagnosis;
+
+  //DateTime date;
+  PatientDiagnoses({
+    required this.listPatientDiagnosis});
+
+  factory PatientDiagnoses.fromJson(json) {
+
+    List<PatientDiagnosis> temp = [];
+    for (int i = 0; i < json.length; i++) {
+
+      PatientDiagnosis tempElement = PatientDiagnosis.fromJson(json[i]);
+      tempElement.id = json[i].id;
+      temp.add(tempElement);
+    }
+    return PatientDiagnoses(
+        listPatientDiagnosis: temp);
+  }
+
+  Map<String, dynamic> toJson() {
+    List<Map<String, dynamic>> temp = [];
+    for (var element in listPatientDiagnosis) {
+      temp.add(element.toJson());
+    }
+    return {
+      'listPatientDiagnosis': temp,
+    };
+  }
+  factory PatientDiagnoses.init()=>PatientDiagnoses(listPatientDiagnosis: []);
+}
+
+
+//TreatmentPlan
+class TreatmentPlan {
+  String? id;
+  String namePlan;
+  String? clinicPlan;
+  String? diseasePlan;
+  String treatmentPlan;
+  List<String> testFiles = [];
+  List<String> xRayFiles = [];
+  List<DateTime> appointments = [];
+  DateTime dateTime;
+  bool notification;
+
+  TreatmentPlan({
+    this.id="",
+    required this.namePlan,
+    this.clinicPlan='',
+    this.diseasePlan='',
+    required this.testFiles,
+    required this.xRayFiles,
+    required this.appointments,
+    required this.treatmentPlan,
+    required this.dateTime,
+    this.notification=false,
+  });
+
+  factory TreatmentPlan.fromJson(json) {
+
+    List<String> temp = [];
+    if(json['testFiles']!=null)
+    for (int i = 0; i < json['testFiles'].length; i++) {
+      String tempElement = (json['testFiles'][i]);
+      temp.add(tempElement);
+    }
+
+    List<String> temp1 = [];
+    if(json?['xRayFiles']!=null)
+    for (int i = 0; i < json['xRayFiles'].length; i++) {
+      String tempElement = (json['xRayFiles'][i]);
+      temp1.add(tempElement);
+    }
+
+    List<DateTime> temp2 = [];
+    if(json?['appointments']!=null)
+    for (int i = 0; i < json['appointments'].length; i++) {
+      DateTime tempElement = json['appointments'][i].toDate();
+      temp2.add(tempElement);
+    }
+    return TreatmentPlan(
+        id: json['id'],
+        namePlan: json['namePlan'],
+        diseasePlan: json['diseasePlan'],
+        treatmentPlan: json['treatmentPlan'],
+        clinicPlan: json['clinicPlan'],
+
+        testFiles: temp,
+        xRayFiles: temp1,
+        appointments: temp2,
+
+        notification: json['notification'],
+        dateTime: json['dateTime'].toDate());
+  }
+
+  Map<String, dynamic> toJson() {
+    List<String> temp = [];
+    for (var element in testFiles) {
+      temp.add(element);
+    }
+    List<String> temp1= [];
+    for (var element in xRayFiles) {
+      temp1.add(element);
+    }
+    List<DateTime> temp2 = [];
+    for (var element in appointments) {
+      temp2.add(element);
+    }
+    return {
+      'id': id,
+      'namePlan': namePlan,
+      'diseasePlan': diseasePlan,
+      'treatmentPlan': treatmentPlan,
+      'clinicPlan': clinicPlan,
+
+      'testFiles': temp,
+      'appointments': temp2,
+      'xRayFiles': temp1,
+
+      'notification': notification,
+      'dateTime': dateTime,
+    };
+  }
+  factory TreatmentPlan.init(){
+    return TreatmentPlan( dateTime: DateTime.now(), namePlan: '', testFiles: [], xRayFiles: [], appointments: [], treatmentPlan: '');
+  }
+}
+
+//PreformedSurgeries
+class PreformedSurgeries {
+  String? id;
+  String namePerformed;
+  DateTime datePerformed;
+  String? locationPerformed;
+  String clinicPerformed;
+  String notesPerformed;
+  DateTime dateTime;
+  bool notification;
+
+  PreformedSurgeries({
+    this.id="",
+    required this.namePerformed,
+    this.locationPerformed='',
+    required this.datePerformed,
+    required this.clinicPerformed,
+    required this.notesPerformed,
+    required this.dateTime,
+    this.notification=false,
+  });
+
+  factory PreformedSurgeries.fromJson(json) {
+    return PreformedSurgeries(
+        id: json['id'],
+        namePerformed: json['namePerformed'],
+        locationPerformed: json['locationPerformed'],
+        datePerformed: json['datePerformed'].toDate(),
+        clinicPerformed: json['clinicPerformed'],
+        notesPerformed: json['notesPerformed'],
+        notification: json['notification'],
+        dateTime: json['dateTime'].toDate());
+  }
+
+  Map<String, dynamic> toJson() {
+
+    return {
+      'id': id,
+      'namePerformed': namePerformed,
+      'locationPerformed': locationPerformed,
+      'datePerformed': datePerformed,
+      'clinicPerformed': clinicPerformed,
+      'notesPerformed': notesPerformed,
+      'notification': notification,
+      'dateTime': dateTime,
+    };
+  }
+  factory PreformedSurgeries.init(){
+    return PreformedSurgeries( dateTime: DateTime.now(), namePerformed: '', datePerformed:  DateTime.now(), clinicPerformed: '', notesPerformed: '',);
+  }
+}
+
+
 //Mail
 class Mail {
   String id;

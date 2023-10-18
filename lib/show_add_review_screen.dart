@@ -14,6 +14,7 @@ import 'common_widgets/picture/cach_picture_widget.dart';
 import 'constants/app_constant.dart';
 import 'controller/provider/medical_provider.dart';
 import 'controller/provider/process_provider.dart';
+import 'controller/provider/profile_provider.dart';
 
 class ShowAndAddReviewScreen extends StatefulWidget {
    ShowAndAddReviewScreen({super.key,required this.medical});
@@ -92,35 +93,39 @@ var size;
                 }),
           ),
 
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child:  StatefulBuilder(builder: (context, writeSetState) {
-                return Row(
-                  children: [
-                    Expanded(child: AppTextFormFiled(
-                      controller: messageController,
-                      hintText: 'Type here...',
-                    )),
-                    const SizedBox(width: 10.0,),
-                    InkWell(
-                      onTap: () async {
-                        if(messageController.text.trim().isNotEmpty){
-                          //ToDo: Send Review
-                          //ToDo: Replay-Done Send
-                        //  reviewsList.add(messageController.text);
-                         medicalController.addMedicalReview(context, medical: widget.medical, review: messageController.text);
-                        messageController.clear();
-                        writeSetState(() {
-                        });
-                        }
-                      },
-                      child: CircleAvatar(
-                        child: Icon(Icons.send),
-                      ),
-                    )
-                  ],
-                );
-              }
+          Visibility(
+            visible: [AppConstants.collectionPatient,AppConstants.collectionDoctor].contains(context.read<ProfileProvider>().user.typeUser),
+
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child:  StatefulBuilder(builder: (context, writeSetState) {
+                  return Row(
+                    children: [
+                      Expanded(child: AppTextFormFiled(
+                        controller: messageController,
+                        hintText: 'Type here...',
+                      )),
+                      const SizedBox(width: 10.0,),
+                      InkWell(
+                        onTap: () async {
+                          if(messageController.text.trim().isNotEmpty){
+                            //ToDo: Send Review
+                            //ToDo: Replay-Done Send
+                          //  reviewsList.add(messageController.text);
+                           medicalController.addMedicalReview(context, medical: widget.medical, review: messageController.text);
+                          messageController.clear();
+                          writeSetState(() {
+                          });
+                          }
+                        },
+                        child: CircleAvatar(
+                          child: Icon(Icons.send),
+                        ),
+                      )
+                    ],
+                  );
+                }
+              ),
             ),
           )
         ],

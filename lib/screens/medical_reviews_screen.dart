@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:patient_journey/common_widgets/app_text_form_filed.dart';
 import 'package:patient_journey/constants/app_colors.dart';
 import 'package:patient_journey/controller/provider/medical_provider.dart';
+import 'package:patient_journey/controller/provider/profile_provider.dart';
 import 'package:patient_journey/models/models.dart';
+import 'package:patient_journey/screens/admin/edit_medication_screen.dart';
 import 'package:patient_journey/show_add_review_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -206,12 +208,32 @@ class BuildMedicals extends StatelessWidget {
                             color: AppColors.white,
                             fontWeight: FontWeight.bold),
                       ),
-                      trailing: IconButton(
-                        icon: Icon(Icons.record_voice_over,color: AppColors.white,),
-                        onPressed: (){
-                         Navigator.push(context, MaterialPageRoute(builder: (ctx)=>ShowAndAddReviewScreen(medical: medicals[index],)));
-                        },
-                      ),
+                      trailing:
+
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+
+                            children: [
+                              Visibility(
+                                visible: [AppConstants.collectionAdmin].contains(context.read<ProfileProvider>().user.typeUser),
+                                child: InkWell(
+                                  child: Icon(Icons.edit,color: AppColors.white,),
+                                  onTap: (){
+
+                                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=>EdigtMedicationScreen(medical: medicals[index],)));
+                                  },
+                                ),
+                              ),
+                              SizedBox(width: 0,),
+                              InkWell(
+                                child: Icon(Icons.record_voice_over,color: AppColors.white,),
+                                onTap: (){
+                                  Navigator.push(context, MaterialPageRoute(builder: (ctx)=>ShowAndAddReviewScreen(medical: medicals[index],)));
+                                },
+                              )
+                            ],
+                          )
+
                     ),
                   ))
             ],

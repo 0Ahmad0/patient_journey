@@ -273,7 +273,7 @@ class _SenderWidgetState extends State<SenderWidget> {
             ClipOval(
             child: CacheNetworkImage(
             photoUrl: // "https://th.bing.com/th/id/R.1b3a7efcd35343f64a9ae6ad5b5f6c52?rik=HGgUvyvtG4jbAQ&riu=http%3a%2f%2fwww.riyadhpost.live%2fuploads%2f7341861f7f918c109dfc33b73d8356b2.jpg&ehk=3Z4lADOKvoivP8Tbzi2Y56dxNrCWd0r7w7CHQEvpuUg%3d&risl=&pid=ImgRaw&r=0",
-            '${context.read<ProcessProvider>().fetchLocalUser(idUser: recId??'')?.photoUrl??''}',
+            '${context.read<ProcessProvider>().fetchLocalUser(idUser: context.read<ProfileProvider>().user.id??'')?.photoUrl??''}',
         width: size.width / 8.5,
         height: size.width / 8.5,
         boxFit: BoxFit.fill,
