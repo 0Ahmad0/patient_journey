@@ -36,6 +36,7 @@ class Const{
         textToast,
         context: context,
         animation: StyledToastAnimation.fadeScale,
+        position: StyledToastPosition.top,
         textStyle: getRegularStyle(color: AppColors.white)
     );
   }
