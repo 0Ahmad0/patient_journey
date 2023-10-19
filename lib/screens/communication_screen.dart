@@ -6,7 +6,11 @@ import 'package:lottie/lottie.dart';
 import 'package:patient_journey/common_widgets/app_text_form_filed.dart';
 import 'package:patient_journey/constants/app_assets.dart';
 import 'package:patient_journey/constants/app_colors.dart';
+import 'package:patient_journey/constants/app_constant.dart';
+import 'package:patient_journey/controller/provider/auth_provider.dart';
+import 'package:patient_journey/controller/provider/profile_provider.dart';
 import 'package:patient_journey/list_doctors_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../controller/mail_controller.dart';
 //import 'package:url_launcher/url_launcher.dart';
@@ -22,12 +26,14 @@ class _CommunicationScreenState extends State<CommunicationScreen> {
   final _messageController = TextEditingController();
   List<File> files = [];
   late MailController mailController;
+
   @override
   void initState() {
-    mailController=MailController(context: context);
+    mailController = MailController(context: context);
     super.initState();
   }
-  String url(phone,message) {
+
+  String url(phone, message) {
     if (Platform.isAndroid) {
       // add the [https]
       return "https://wa.me/$phone/?text=${Uri.parse(message)}"; // new line
@@ -36,9 +42,11 @@ class _CommunicationScreenState extends State<CommunicationScreen> {
       return "https://api.whatsapp.com/send?phone=$phone=${Uri.parse(message)}"; // new line
     }
   }
+
   Future<void> _makePhoneCall(String phoneNumber) async {
     ///await launchUrl(Uri.parse(url(phoneNumber, 'message')));
   }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
@@ -54,10 +62,19 @@ class _CommunicationScreenState extends State<CommunicationScreen> {
               children: [
                 const Spacer(),
                 FloatingActionButton.extended(
-                  onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=>ListDoctorsScreen()));
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (ctx) => ListDoctorsScreen()));
                   },
-                  label: Text('Chat With Doctor'),
+                  label: Text(
+                    'Chat With ${[
+                      AppConstants.collectionPatient
+                    ].contains(context.read<ProfileProvider>().user.typeUser) ?
+                    '${AppConstants.collectionDoctor}'
+                        : '${AppConstants.collectionPatient}'}',
+                  ),
                   icon: Icon(Icons.chat_bubble),
                 ),
                 Expanded(
@@ -192,11 +209,12 @@ class _CommunicationScreenState extends State<CommunicationScreen> {
                       height: 20.0,
                     ),
                     TextButton.icon(
-                      onPressed: () async{
+                      onPressed: () async {
                         await _makePhoneCall('+966556422698');
                       },
-                      icon: const Icon(FontAwesomeIcons.whatsapp,
-                     color: AppColors.green,
+                      icon: const Icon(
+                        FontAwesomeIcons.whatsapp,
+                        color: AppColors.green,
                         size: 30.0,
                       ),
                       label: const Text(
@@ -212,17 +230,13 @@ class _CommunicationScreenState extends State<CommunicationScreen> {
                     ),
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 50.0),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(100.0)
-                        )
-                      ),
+                          minimumSize: const Size(double.infinity, 50.0),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100.0))),
                       onPressed: () {
-                        if (_messageController.value.text.length>0) {
-
-                          mailController.addMail(context,
-                              _messageController.value.text,
-                              files);
+                        if (_messageController.value.text.length > 0) {
+                          mailController.addMail(
+                              context, _messageController.value.text, files);
                         }
                       },
                       child: const Text('Send Request'),
@@ -232,8 +246,6 @@ class _CommunicationScreenState extends State<CommunicationScreen> {
               ),
             ),
           ),
-
-
         ],
       ),
     );
