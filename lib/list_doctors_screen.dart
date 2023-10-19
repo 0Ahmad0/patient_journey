@@ -72,9 +72,11 @@ class _ListDoctorsScreenState extends State<ListDoctorsScreen> {
                 Const.SHOWLOADINGINDECATOR();
                 chatProvider.chats.listChat.clear();
                 if(snapshot.data!.docs!.length>0){
-                  chatProvider.chats=Chats.fromJson(snapshot.data!.docs!);
-                  for(Chat chat in chatProvider.chats.listChat)
-                   context.read<ProcessProvider>().fetchUsers(context, idUsers:  chat.listIdUser);
+    chatProvider.chats=Chats.fromJson(snapshot.data!.docs!);
+    for(Chat chat in chatProvider.chats.listChat){
+    final recId=context.read<ChatProvider>().getIdUserOtherFromList(context, chat.listIdUser);
+    context.read<ProcessProvider>().fetchUser(context, idUser:recId);
+    }
                 }
 
 

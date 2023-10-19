@@ -7,6 +7,7 @@ import 'package:patient_journey/constants/app_colors.dart';
 
 import '../constants/app_assets.dart';
 import '../constants/style_manager.dart';
+import '../models/models.dart';
 
 class Const{
   static loading (context){
@@ -31,6 +32,29 @@ class Const{
         barrierDismissible: false
     );
   }
+  static LOADING_DROPDOWN ({required String text,StateStream? stateStream}){
+    return  ListTile(
+      title: Text(
+        text,
+        style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.white),
+      ),
+      trailing:
+      stateStream==StateStream.Empty?
+          Icon(Icons.hourglass_empty_outlined)
+      : stateStream==StateStream.Error?
+      Icon(Icons.error_outline)
+     : CircularProgressIndicator(
+        color: Colors.white,
+        strokeWidth: 2,
+        strokeAlign: CircularProgressIndicator.strokeAlignInside,
+      )
+
+      ,
+    );
+  }
+
   static TOAST(BuildContext context, {String textToast = "This Is Toast"}) {
     showToast(
         textToast,

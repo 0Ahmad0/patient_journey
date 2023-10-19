@@ -79,6 +79,8 @@ var size;
                       if(snapshot.data!=null){
                         medicalController.medicalProvider.medical=Medical.fromJsonDoc(snapshot.data!.data(),snapshot.data!.id);
                         reviewsList=medicalController.medicalProvider.medical.listMedicalReview;
+                        for(MedicalReview medicalReview in reviewsList)
+                          context.read<ProcessProvider>().fetchUser(context, idUser:  medicalReview.idUser);
                       }
 
                       return  buildMedicalReviews(context);

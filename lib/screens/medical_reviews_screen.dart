@@ -98,6 +98,11 @@ class _MedicalReviewsScreenState extends State<MedicalReviewsScreen> {
           children: [
             TextFormField(
               controller: searchController,
+              onChanged: (val){
+                setState(() {
+
+                });
+              },
               decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderSide: BorderSide.none,

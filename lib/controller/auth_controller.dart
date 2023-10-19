@@ -39,7 +39,7 @@ class AuthController {
     required String password,
   }) async {
     Const.loading(context);
-    authProvider.user.email = email ?? '';
+    authProvider.user.email = email ?? filed??'';
     authProvider.user.phoneNumber = phone ?? '';
     authProvider.user.cardId = filed ?? '';
     authProvider.user.password = password;

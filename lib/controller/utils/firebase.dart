@@ -360,6 +360,45 @@ class FirebaseFun{
   }
 
 
+
+
+  ///Notification
+  static addNotification( {required model.Notification notification}) async {
+    final result= await FirebaseFirestore.instance.collection(AppConstants.collectionNotification).add(
+        notification.toJson()
+    ).then(onValueAddNotification).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+  static updateNotification( {required model.Notification notification}) async {
+    final result= await FirebaseFirestore.instance.collection(AppConstants.collectionNotification).doc(
+        notification.id
+    ).update(notification.toJson()).then(onValueUpdateNotification).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+  static deleteNotification( {required model.Notification notification}) async {
+    final result= await FirebaseFirestore.instance.collection(AppConstants.collectionNotification).doc(
+        notification.id
+    ).delete().then(onValueDeleteNotification).catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+  static fetchNotificationByFieldOrderBy({required String field,required String value})  async {
+    final result=await FirebaseFirestore.instance.collection(AppConstants.collectionNotification)
+        .where(field,isEqualTo: value)
+        .get()
+        .then((onValueFetchNotifications))
+        .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+  static fetchNotificationByField({required String field,required String value,String orderBy='dateTime'})  async {
+    final result=await FirebaseFirestore.instance.collection(AppConstants.collectionNotification)
+        .where(field,isEqualTo: value)
+        .orderBy(orderBy)
+        .get()
+        .then((onValueFetchNotifications))
+        .catchError(onError).timeout(timeOut,onTimeout: onTimeOut);
+    return result;
+  }
+
   // ///Report
   // static addReport( {required model.Report report}) async {
   //   final result= await FirebaseFirestore.instance.collection(AppConstants.collectionReport).add(
@@ -855,6 +894,7 @@ class FirebaseFun{
       'body':value.data()
     };
   }
+
 
 
 

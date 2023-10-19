@@ -82,6 +82,7 @@ class User {
 
   factory User.fromJson(json) {
     var data;
+
     if(Map<String,dynamic>().runtimeType!=json.runtimeType)
        data=json.data();
     else
@@ -1291,6 +1292,11 @@ enum TypeMessage{
   text,
   image,
   file,
+}
+enum StateStream{
+Wait,
+  Empty,
+  Error
 }
 /*
 flutter pub run easy_localization:generate -S "assets/translations/" -O "lib/translations"

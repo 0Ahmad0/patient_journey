@@ -24,5 +24,20 @@ class AppConstants {
   static String collectionChat = "Chat";
   static String collectionMessage = "Message";
   static String collectionPatientDiagnosis = "PatientDiagnosis";
+  static String collectionNotification = "Notification";
+
+
+  //notification
+  static String notificationTitleNewChat = "New chat";
+  static String notificationSubTitleNewChat = " You have been added to a new conversation by";
+
+  static String notificationTitleNewDoctor = "New doctor";
+  static String notificationSubTitleNewDoctor  = "You were added by Dr.";
+
+  static String notificationTitleNewDiagnosis = "New diagnosis";
+  static String notificationSubTitleNewDiagnosis = "A new diagnosis has been added by Dr.";
+
+
+
 
 }

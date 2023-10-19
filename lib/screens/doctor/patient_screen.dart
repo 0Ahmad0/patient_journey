@@ -26,7 +26,7 @@ class _PatientScreenState extends State<PatientScreen> {
   late PatientDiagnosisController patientDiagnosisController;
   getPatientDiagnosisFun()  {
     getPatientDiagnosis = FirebaseFirestore.instance.collection(AppConstants.collectionPatientDiagnosis)
-        .where('idDoctors',isEqualTo: context.read<ProfileProvider>().user.id).snapshots();
+        .where('idDoctor',isEqualTo: context.read<ProfileProvider>().user.id).snapshots();
     return getPatientDiagnosis;
   }
   @override

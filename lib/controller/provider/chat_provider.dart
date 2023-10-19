@@ -30,6 +30,7 @@ class ChatProvider with ChangeNotifier{
         Chat(messages: [], listIdUser: listIdUser, date: DateTime.now()));
         if(result['status'])
           await FirebaseFun.addMessage(message: Message.init(),idChat:result['body']['id'] );
+
       }
 
       else

@@ -21,6 +21,8 @@ import '../utils/firebase.dart';
 class PatientDiagnosisProvider with ChangeNotifier{
   PatientDiagnosis patientDiagnosis=PatientDiagnosis.init();
   PatientDiagnoses patientDiagnoses=PatientDiagnoses.init();
+  PatientDiagnoses patientTreatmentPlan=PatientDiagnoses.init();
+  PatientDiagnoses patientPreformedSurgeries=PatientDiagnoses.init();
 
  fetchAllPatientDiagnosis(BuildContext context) async {
    var result;

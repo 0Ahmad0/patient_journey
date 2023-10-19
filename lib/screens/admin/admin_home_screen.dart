@@ -214,9 +214,10 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: mails[index].files.length,
-                          itemBuilder: (_, index) => InkWell(
+                          itemBuilder: (_, index1) => InkWell(
                             onTap: ()async{
-                              final _url = Uri.parse(mails[index].files[index]);
+
+                              final _url = Uri.parse(mails[index].files[index1]);
                               if(await launchUrl(_url)) {
                               }else{
                                 Const.TOAST(context,textToast: 'Error Launch File');

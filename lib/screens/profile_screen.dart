@@ -167,6 +167,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     ),
                                                     ListTile(
                                                       onTap: () async {
+                                                        userImage=null;
+                                                        value.user.photoUrl='';
+                                                        imageSetState((){});
                                                         //ToDo : Remove Photo
                                                         Navigator.pop(context);
                                                       },

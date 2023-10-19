@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../../common_widgets/constans.dart';
 import '../../common_widgets/picture/cach_picture_widget.dart';
 import '../../constants/app_constant.dart';
+import '../../controller/provider/notification_provider.dart';
 import '../../controller/provider/process_provider.dart';
 import '../../controller/provider/profile_provider.dart';
 import '../../models/models.dart' as models;
@@ -107,7 +108,11 @@ class _AddNewPatientScreenState extends State<AddNewPatientScreen> {
         subtitle: Text(users[index].email),
         trailing: IconButton(
           onPressed: () async {
-            await patientDiagnosisController.addPatientDiagnosis(context, idPatient: users[index].id);
+            var result=await patientDiagnosisController.addPatientDiagnosis(context, idPatient: users[index].id);
+            if(result['status'])
+              context.read<NotificationProvider>().addNotification(context, notification: models.Notification(idUser: users[index].id,
+                  subtitle: AppConstants.notificationTitleNewDoctor+' '+(profileProvider?.user?.firstName??''),
+                  dateTime: DateTime.now(), title: AppConstants.notificationSubTitleNewDoctor, message: ''));
           },
           icon: Icon(
             Icons.add_circle,

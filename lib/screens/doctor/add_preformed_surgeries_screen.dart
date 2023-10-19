@@ -54,7 +54,10 @@ class _AddPreformedSurgeriesScreenState extends State<AddPreformedSurgeriesScree
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton:
+        StatefulBuilder(
+        builder: (context,buttonSetState) =>
+      FloatingActionButton.extended(
         icon: const Icon(Icons.add),
         onPressed: () {
           if (_formKey.currentState!.validate()) {
@@ -71,10 +74,13 @@ class _AddPreformedSurgeriesScreenState extends State<AddPreformedSurgeriesScree
               widget.patientDiagnosis!.preformedSurgeries?.datePerformed= DateFormat.yMd().parse(datePerformedController.value.text),
               PatientDiagnosisController(context: context).updatePreformedSurgeries(context, patientDiagnosis: widget.patientDiagnosis!,)
             };
+            buttonSetState(() {
+              addOrEdit=widget.patientDiagnosis?.preformedSurgeries==null;
+            });
           }
         },
         label:  Text(addOrEdit?'Add':'Edit'),
-      ),
+      )),
       body: Form(
         key: _formKey,
         child: Container(

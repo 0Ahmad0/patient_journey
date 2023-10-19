@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:patient_journey/constants/app_colors.dart';
+import 'package:patient_journey/controller/provider/notification_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../common_widgets/constans.dart';
@@ -10,6 +11,7 @@ import '../constants/app_constant.dart';
 import '../controller/provider/chat_provider.dart';
 import '../controller/provider/process_provider.dart';
 import '../controller/provider/profile_provider.dart';
+import '../models/models.dart' as models;
 import '../models/models.dart';
 import 'chat_screen.dart';
 
@@ -106,7 +108,9 @@ class _AddChatScreenState extends State<AddChatScreen> {
               child: IconButton(
                 onPressed: () async {
                   Const.loading(context);
-                  await chatProvider.createChat(listIdUser: [profileProvider.user.id,users[index].id]);
+                  var result=await chatProvider.createChat(listIdUser: [profileProvider.user.id,users[index].id]);
+                  if(result['status'])
+                    context.read<NotificationProvider>().addNotification(context, notification: models.Notification(idUser: users[index].id, subtitle: AppConstants.notificationSubTitleNewChat+' '+(profileProvider?.user?.firstName??''), dateTime: DateTime.now(), title: AppConstants.notificationTitleNewChat, message: ''));
                   await chatProvider.fetchChatByListIdUser(listIdUser: [profileProvider.user.id,users[index].id]);
                   Get.back();
                   Get.back();

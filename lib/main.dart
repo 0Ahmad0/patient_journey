@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:patient_journey/controller/provider/chat_provider.dart';
 import 'package:patient_journey/controller/provider/mail_provider.dart';
 import 'package:patient_journey/controller/provider/medical_provider.dart';
+import 'package:patient_journey/controller/provider/notification_provider.dart';
 import 'package:patient_journey/list_doctors_screen.dart';
 import 'package:patient_journey/screens/admin/admin_home_screen.dart';
 import 'package:patient_journey/screens/doctor/patient_screen.dart';
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
      Provider<ProcessProvider>(create: (_)=>ProcessProvider()),
      Provider<ChatProvider>(create: (_)=>ChatProvider()),
      Provider<PatientDiagnosisProvider>(create: (_)=>PatientDiagnosisProvider()),
+     Provider<NotificationProvider>(create: (_)=>NotificationProvider()),
     //
     ],
       child:GetMaterialApp(

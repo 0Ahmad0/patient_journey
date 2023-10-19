@@ -55,7 +55,10 @@ class _AddTreatmentPlanScreenState extends State<AddTreatmentPlanScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton.extended(
+      floatingActionButton:
+      StatefulBuilder(
+        builder: (context,buttonSetState) =>
+      FloatingActionButton.extended(
         icon: const Icon(Icons.add),
         onPressed: () {
           if (_formKey.currentState!.validate()) {
@@ -72,11 +75,13 @@ class _AddTreatmentPlanScreenState extends State<AddTreatmentPlanScreen> {
               PatientDiagnosisController(context: context).updateTreatmentPlan(context, patientDiagnosis: widget.patientDiagnosis!,
                 testFiles: myTestFiles, xRayFiles: myXRayFiles, appointments: appointments)
             };
-
+            buttonSetState(() {
+              addOrEdit=widget.patientDiagnosis?.preformedSurgeries==null;
+            });
           }
         },
         label:  Text(addOrEdit?'Add':'Edit'),
-      ),
+      )),
       body: Form(
         key: _formKey,
         child: Container(

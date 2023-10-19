@@ -21,6 +21,7 @@ class AppointmentsScreen extends StatefulWidget {
 class _AppointmentsScreenState extends State<AppointmentsScreen> {
   var getPatientDiagnosis;
   late PatientDiagnosisController patientDiagnosisController;
+  DateTime selectDate=DateTime.now();
   getPatientDiagnosisFun()  {
     getPatientDiagnosis = FirebaseFirestore.instance.collection(AppConstants.collectionPatientDiagnosis)
         .where('idPatient',isEqualTo: context.read<ProfileProvider>().user.id)
@@ -76,8 +77,8 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
 
                             TabBarView(
                               children: [
-                                CurrentAppointments(patientDiagnoses: patientDiagnosisController.patientDiagnosisProvider.patientDiagnoses.listPatientDiagnosis,),
-                                NextAppointments(patientDiagnoses: patientDiagnosisController.patientDiagnosisProvider.patientDiagnoses.listPatientDiagnosis),
+                                CurrentAppointments(selectDate:selectDate,patientDiagnoses: patientDiagnosisController.patientDiagnosisProvider.patientDiagnoses.listPatientDiagnosis,),
+                                NextAppointments(selectDate:selectDate,patientDiagnoses: patientDiagnosisController.patientDiagnosisProvider.patientDiagnoses.listPatientDiagnosis),
                               ],
                             );
                         } else {
@@ -90,12 +91,15 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: AppButton(onPressed: (){
-                  final picker = showDatePicker(
+                child: AppButton(onPressed: () async {
+                  final picker =await showDatePicker(
                       context: context,
-                      initialDate: DateTime.now(),
+                      initialDate: selectDate,
                       firstDate: DateTime(1990),
                       lastDate: DateTime(2100));
+                  selectDate=picker??selectDate;
+                  setState(() {
+                  });
                 }, text: 'Select Appointment'),
               )
             ],
@@ -105,14 +109,16 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
 }
 
 class CurrentAppointments extends StatelessWidget {
-   CurrentAppointments({super.key,required this.patientDiagnoses});
+   CurrentAppointments({super.key,required this.patientDiagnoses,required this.selectDate});
    List<PatientDiagnosis> patientDiagnoses;
+   DateTime selectDate;
   @override
   Widget build(BuildContext context) {
     List<PatientDiagnosis> temp=[];
+
     for(PatientDiagnosis patientDiagnosis in patientDiagnoses)
-      if(patientDiagnosis.treatmentPlan!.appointments.contains(DateFormat.yMd().parse(DateTime.now().toString())))
-        temp.add(patientDiagnosis);
+       if(patientDiagnosis.treatmentPlan!.appointments.contains(DateFormat.yMd().parse(DateFormat.yMd().format(selectDate))))
+         temp.add(patientDiagnosis);
     patientDiagnoses=temp;
     return
       patientDiagnoses.isEmpty?
@@ -138,26 +144,32 @@ class CurrentAppointments extends StatelessWidget {
             padding: const EdgeInsets.only(top: 12.0),
             child: Text(
             //    DateFormat.yMd().add_jms().format(DateTime.now())
-                '${DateFormat.yMd().add_jms().format(patientDiagnoses[index].treatmentPlan!.appointments!.first)}'+
-                    ' .... '+
-               '${DateFormat.yMd().add_jms().format(patientDiagnoses[index].treatmentPlan!.appointments!.last)}'
+                getShortDates(patientDiagnoses[index].treatmentPlan!.appointments!)
             ),
           ),
         ))),
       ),
     );
   }
+   getShortDates(List<DateTime> dates){
+     String shortDates='';
+     shortDates=DateFormat.yMd().format(dates.first);
+     if(dates.length>1)
+       shortDates+=' .... '+DateFormat.yMd().format(dates.last);
+     return shortDates;
+   }
 }
 
 class NextAppointments extends StatelessWidget {
-   NextAppointments({super.key,required this.patientDiagnoses});
+   NextAppointments({super.key,required this.patientDiagnoses,required this.selectDate});
   List<PatientDiagnosis> patientDiagnoses;
+   DateTime selectDate;
   @override
   Widget build(BuildContext context) {
     List<PatientDiagnosis> temp=[];
     for(PatientDiagnosis patientDiagnosis in patientDiagnoses)
       for(DateTime dateTime in patientDiagnosis.treatmentPlan!.appointments)
-        if(dateTime.compareTo(DateFormat.yMd().parse(DateTime.now().toString()))==1){
+        if(dateTime.compareTo(DateFormat.yMd().parse(DateFormat.yMd().format(selectDate)))==1){
           temp.add(patientDiagnosis);
           break;
         }
@@ -183,10 +195,20 @@ class NextAppointments extends StatelessWidget {
           }'),
           subtitle: Padding(
             padding: const EdgeInsets.only(top: 12.0),
-            child: Text(DateFormat.yMd().add_jms().format(DateTime.now())),
+            child: Text(
+                //DateFormat.yMd().add_jms().format(DateTime.now())
+                getShortDates(patientDiagnoses[index].treatmentPlan!.appointments!)
+            ),
           ),
         ),
       ),
     )));
+  }
+  getShortDates(List<DateTime> dates){
+    String shortDates='';
+    shortDates=DateFormat.yMd().format(dates.first);
+    if(dates.length>1)
+      shortDates+=' .... '+DateFormat.yMd().format(dates.last);
+    return shortDates;
   }
 }

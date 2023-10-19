@@ -9,11 +9,14 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import 'package:patient_journey/controller/provider/medical_provider.dart';
+import 'package:patient_journey/controller/provider/notification_provider.dart';
 import 'package:patient_journey/controller/provider/patient_diagnosis_provider.dart';
-import 'package:patient_journey/models/models.dart';
+import 'package:patient_journey/models/models.dart' ;
+import 'package:patient_journey/models/models.dart' as models;
 import 'package:patient_journey/screens/doctor/add_plan_and_preformed_surgeries_screen.dart';
 import '../common_widgets/constans.dart';
 
+import '../constants/app_constant.dart';
 import '/controller/provider/profile_provider.dart';
 import '/controller/utils/firebase.dart';
 
@@ -38,6 +41,9 @@ class PatientDiagnosisController{
      );
        if(result['status']){
          Get.back();
+           context.read<NotificationProvider>().addNotification(context, notification: models.Notification(idUser:idPatient,
+               subtitle: AppConstants.notificationTitleNewDiagnosis+' '+(profileProvider?.user?.firstName??''),
+               dateTime: DateTime.now(), title: AppConstants.notificationSubTitleNewDiagnosis, message: ''));
        }
        else Const.TOAST(context,textToast: FirebaseFun.findTextToast(result['message'].toString()));
     Get.back();
@@ -66,7 +72,9 @@ class PatientDiagnosisController{
     ,required List<DateTime> appointments
   }) async {
     Const.loading(context);
-    patientDiagnosis.treatmentPlan=TreatmentPlan(namePlan: namePlan, testFiles: [], xRayFiles: [], appointments: appointments, treatmentPlan: treatmentPlan, dateTime: DateTime.now());
+    patientDiagnosis.treatmentPlan=TreatmentPlan(namePlan: namePlan, testFiles: [], xRayFiles: [],
+        diseasePlan: diseasePlan,clinicPlan: clinicPlan,
+        appointments: appointments, treatmentPlan: treatmentPlan, dateTime: DateTime.now());
     var result;
     result=await patientDiagnosisProvider.updateTreatmentPlan(context, patientDiagnosis: patientDiagnosis,
         testFiles: testFiles,xRayFiles:xRayFiles);

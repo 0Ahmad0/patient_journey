@@ -1,10 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:patient_journey/constants/app_assets.dart';
 import 'package:patient_journey/constants/app_colors.dart';
 import 'package:patient_journey/screens/my_test_and_xrays.dart';
 import 'package:patient_journey/screens/performed_surgeries_details.dart';
 import 'package:patient_journey/screens/plan_details_screen.dart';
+import 'package:provider/provider.dart';
 
+import '../common_widgets/constans.dart';
+import '../common_widgets/picture/cach_picture_widget.dart';
+import '../constants/app_constant.dart';
+import '../controller/patient_diagnosis_controller.dart';
+import '../controller/provider/process_provider.dart';
+import '../controller/provider/profile_provider.dart';
+import '../models/models.dart';
 import '../models/treatment_plan_model.dart';
 import 'my_reports_screen.dart';
 
@@ -43,6 +52,23 @@ class _MedicalFilesScreenState extends State<MedicalFilesScreen> {
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(100.0)));
   }
 
+
+  var getPatientDiagnosis;
+
+  late PatientDiagnosisController patientDiagnosisController;
+  DateTime selectDate=DateTime.now();
+  getPatientDiagnosisFun()  {
+    getPatientDiagnosis = FirebaseFirestore.instance.collection(AppConstants.collectionPatientDiagnosis)
+        .where('idPatient',isEqualTo: context.read<ProfileProvider>().user.id)
+       .snapshots();
+    return getPatientDiagnosis;
+  }
+  @override
+  void initState() {
+    patientDiagnosisController= PatientDiagnosisController(context: context);
+    getPatientDiagnosisFun();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,48 +124,40 @@ class _MedicalFilesScreenState extends State<MedicalFilesScreen> {
                     decoration: BoxDecoration(
                         color: AppColors.primary,
                         borderRadius: BorderRadius.circular(100.0)),
-                    child: Container(
-                      child: PopupMenuButton(
-                          child: ListTile(
-                            title: Text(
-                              'My treatment plans',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                            trailing: Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Colors.white,
-                            ),
-                          ),
-                          itemBuilder: (_) {
-                            return _treatmentPlans
-                                .map((e) => PopupMenuItem(
-                                        child: Column(
-                                      children: [
-                                        ListTile(
-                                          onTap: () {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (ctx) =>
-                                                        PlanDetailsScreen()));
-                                          },
-                                          leading: CircleAvatar(
-                                            child: Text(
-                                                '${_treatmentPlans.indexOf(e) + 1}'),
-                                          ),
-                                          title: Text(e.doctorName),
-                                          trailing: Text(e.location),
-                                        ),
-                                        Divider(
-                                          color: AppColors.grey,
-                                        )
-                                      ],
-                                    )))
-                                .toList();
-                          }),
-                    ),
+                    child: StreamBuilder<QuerySnapshot>(
+                      //prints the messages to the screen0
+                        stream: getPatientDiagnosis,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Const.LOADING_DROPDOWN(text: 'My treatment plans');
+                          } else if (snapshot.connectionState == ConnectionState.active) {
+                            if (snapshot.hasError) {
+                              return const Text('Error');
+                            } else if (snapshot.hasData) {
+                              Const.LOADING_DROPDOWN(text: 'My treatment plans');;
+                              patientDiagnosisController.patientDiagnosisProvider.patientTreatmentPlan.listPatientDiagnosis.clear();
+                              List<PatientDiagnosis> temp=[];
+                              if (snapshot.data!.docs!.length > 0) {
+                                patientDiagnosisController.patientDiagnosisProvider.patientTreatmentPlan = PatientDiagnoses.fromJson(snapshot.data!.docs!);
+                                for(PatientDiagnosis patientDiagnosis in patientDiagnosisController.patientDiagnosisProvider.patientTreatmentPlan.listPatientDiagnosis)
+                                  if(patientDiagnosis.treatmentPlan!=null){
+                                    context.read<ProcessProvider>().fetchUser(context, idUser: patientDiagnosis.idDoctor);
+                                    temp.add(patientDiagnosis);
+                                  }
+                                patientDiagnosisController.patientDiagnosisProvider.patientTreatmentPlan.listPatientDiagnosis=temp
+                                ;
+                              }
+                              return
+                                buildTreatmentPlans(context,patientDiagnoses: temp);
+                            } else {
+                              return Const.LOADING_DROPDOWN(text: 'Empty Data',stateStream:StateStream.Empty );;
+                            }
+                          } else {
+                            return
+                              Const.LOADING_DROPDOWN(text: 'State: ${snapshot.connectionState}',stateStream:StateStream.Error);
+
+                          }
+                        }),
                   ),
                   const SizedBox(
                     height: 20.0,
@@ -191,44 +209,39 @@ class _MedicalFilesScreenState extends State<MedicalFilesScreen> {
                     decoration: BoxDecoration(
                         color: AppColors.primary,
                         borderRadius: BorderRadius.circular(100.0)),
-                    child: PopupMenuButton(
-                        child: ListTile(
-                          title: Text(
-                            'preformed surgeries',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                          trailing: Icon(
-                            Icons.keyboard_arrow_down,
-                            color: Colors.white,
-                          ),
-                        ),
-                        itemBuilder: (_) {
-                          return _performedSurgeries
-                              .map((e) => PopupMenuItem(
-                              child: Column(
-                                children: [
-                                  ListTile(
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (ctx) =>
-                                                  PerformedSurgeriesDetailsScreen()));
-                                    },
-                                    leading: CircleAvatar(
-                                      child: Text(
-                                          '${_performedSurgeries.indexOf(e) + 1}'),
-                                    ),
-                                    title: Text(e),
-                                  ),
-                                  Divider(
-                                    color: AppColors.grey,
-                                  )
-                                ],
-                              )))
-                              .toList();
+                    child:StreamBuilder<QuerySnapshot>(
+                      //prints the messages to the screen0
+                        stream: getPatientDiagnosis,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Const.LOADING_DROPDOWN(text: 'My treatment plans');
+                          } else if (snapshot.connectionState == ConnectionState.active) {
+                            if (snapshot.hasError) {
+                              return const Text('Error');
+                            } else if (snapshot.hasData) {
+                              Const.LOADING_DROPDOWN(text: 'My treatment plans');;
+                              patientDiagnosisController.patientDiagnosisProvider.patientPreformedSurgeries.listPatientDiagnosis.clear();
+                              List<PatientDiagnosis> temp=[];
+                              if (snapshot.data!.docs!.length > 0) {
+                                patientDiagnosisController.patientDiagnosisProvider.patientPreformedSurgeries = PatientDiagnoses.fromJson(snapshot.data!.docs!);
+
+                                for(PatientDiagnosis patientDiagnosis in patientDiagnosisController.patientDiagnosisProvider.patientPreformedSurgeries.listPatientDiagnosis)
+                                  if(patientDiagnosis.preformedSurgeries!=null){
+                                    context.read<ProcessProvider>().fetchUser(context, idUser: patientDiagnosis.idDoctor);
+                                    temp.add(patientDiagnosis);
+                                  }
+                                patientDiagnosisController.patientDiagnosisProvider.patientPreformedSurgeries.listPatientDiagnosis=temp;
+                              }
+                              return
+                                buildPreformedSurgeries(context,patientDiagnoses: temp);
+                            } else {
+                              return Const.LOADING_DROPDOWN(text: 'Empty Data',stateStream:StateStream.Empty );;
+                            }
+                          } else {
+                            return
+                              Const.LOADING_DROPDOWN(text: 'State: ${snapshot.connectionState}',stateStream:StateStream.Error);
+
+                          }
                         }),
                   ),
 
@@ -265,5 +278,112 @@ class _MedicalFilesScreenState extends State<MedicalFilesScreen> {
         ],
       ),
     );
+  }
+
+  Widget buildTreatmentPlans(BuildContext context,{required List<PatientDiagnosis> patientDiagnoses}){
+    final size = MediaQuery.sizeOf(context);
+    return Container(
+      child:
+      ChangeNotifierProvider<ProcessProvider>.value(
+        value: Provider.of<ProcessProvider>(context),
+    child: Consumer<ProcessProvider>(
+    builder: (context, value, child)=>
+      PopupMenuButton(
+          child: ListTile(
+            title: Text(
+              'My treatment plans',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            trailing: Icon(
+              Icons.keyboard_arrow_down,
+              color: Colors.white,
+            ),
+          ),
+          itemBuilder: (_) {
+            return
+
+              patientDiagnoses
+                .map((e) => PopupMenuItem(
+                child: Column(
+                  children: [
+
+                    ListTile(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (ctx) =>
+                                    PlanDetailsScreen(patientDiagnosis: e,)));
+                      },
+                      leading: ClipOval(
+                          child: CacheNetworkImage(
+                            photoUrl: '${context.read<ProcessProvider>().fetchLocalUser(idUser: e.idDoctor)??''}',
+                            width: size.width / 8.5,
+                            height: size.width / 8.5,
+                            boxFit: BoxFit.fill,
+                            waitWidget: CircleAvatar( ),
+                            errorWidget: CircleAvatar( ),
+                          )),
+                      title: Text(
+                          '${
+                              value.fetchLocalUser(idUser: e.idDoctor)?.firstName??''
+                          } ${
+                              value.fetchLocalUser(idUser: e.idDoctor)?.lastName??''
+                          }'
+                      ),
+                      trailing: Text(e.treatmentPlan?.treatmentPlan??''),
+                    ),
+                    Divider(
+                      color: AppColors.grey,
+                    )
+                  ],
+                )))
+                .toList();
+          }),
+
+    )));
+  }
+  Widget buildPreformedSurgeries(BuildContext context,{required List<PatientDiagnosis> patientDiagnoses}){
+    return  PopupMenuButton(
+        child: ListTile(
+          title: Text(
+            'preformed surgeries',
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white),
+          ),
+          trailing: Icon(
+            Icons.keyboard_arrow_down,
+            color: Colors.white,
+          ),
+        ),
+        itemBuilder: (_) {
+          return patientDiagnoses
+              .map((e) => PopupMenuItem(
+              child: Column(
+                children: [
+                  ListTile(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (ctx) =>
+                                  PerformedSurgeriesDetailsScreen(patientDiagnosis:e)));
+                    },
+                    leading: CircleAvatar(
+                      child: Text(
+                          '${patientDiagnoses.indexOf(e) + 1}'),
+                    ),
+                    title: Text(e.preformedSurgeries?.namePerformed??''),
+                  ),
+                  Divider(
+                    color: AppColors.grey,
+                  )
+                ],
+              )))
+              .toList();
+        });
   }
 }
