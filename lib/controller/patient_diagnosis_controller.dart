@@ -41,9 +41,6 @@ class PatientDiagnosisController{
      );
        if(result['status']){
          Get.back();
-           context.read<NotificationProvider>().addNotification(context, notification: models.Notification(idUser:idPatient,
-               subtitle: AppConstants.notificationTitleNewDiagnosis+' '+(profileProvider?.user?.firstName??''),
-               dateTime: DateTime.now(), title: AppConstants.notificationSubTitleNewDiagnosis, message: ''));
        }
        else Const.TOAST(context,textToast: FirebaseFun.findTextToast(result['message'].toString()));
     Get.back();

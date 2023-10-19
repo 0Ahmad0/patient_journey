@@ -110,7 +110,7 @@ class _AddNewPatientScreenState extends State<AddNewPatientScreen> {
           onPressed: () async {
             var result=await patientDiagnosisController.addPatientDiagnosis(context, idPatient: users[index].id);
             if(result['status'])
-              context.read<NotificationProvider>().addNotification(context, notification: models.Notification(idUser: users[index].id,
+              NotificationProvider().addNotification(context, notification: models.Notification(idUser: users[index].id,
                   subtitle: AppConstants.notificationTitleNewDoctor+' '+(profileProvider?.user?.firstName??''),
                   dateTime: DateTime.now(), title: AppConstants.notificationSubTitleNewDoctor, message: ''));
           },
