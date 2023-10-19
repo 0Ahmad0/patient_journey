@@ -89,19 +89,19 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                       }
                     }),
               ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: AppButton(onPressed: () async {
-                  final picker =await showDatePicker(
-                      context: context,
-                      initialDate: selectDate,
-                      firstDate: DateTime(1990),
-                      lastDate: DateTime(2100));
-                  selectDate=picker??selectDate;
-                  setState(() {
-                  });
-                }, text: 'Select Appointment'),
-              )
+              // Padding(
+              //   padding: const EdgeInsets.all(16.0),
+              //   child: AppButton(onPressed: () async {
+              //     final picker =await showDatePicker(
+              //         context: context,
+              //         initialDate: selectDate,
+              //         firstDate: DateTime(1990),
+              //         lastDate: DateTime(2100));
+              //     selectDate=picker??selectDate;
+              //     setState(() {
+              //     });
+              //   }, text: 'Select Appointment'),
+              // )
             ],
           ),
         ));
