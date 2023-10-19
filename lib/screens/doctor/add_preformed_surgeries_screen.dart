@@ -59,10 +59,11 @@ class _AddPreformedSurgeriesScreenState extends State<AddPreformedSurgeriesScree
         builder: (context,buttonSetState) =>
       FloatingActionButton.extended(
         icon: const Icon(Icons.add),
-        onPressed: () {
+        onPressed: () async {
+          var  result;
           if (_formKey.currentState!.validate()) {
             addOrEdit?
-            PatientDiagnosisController(context: context).addPreformedSurgeries(context, patientDiagnosis: widget.patientDiagnosis!,
+            result=await PatientDiagnosisController(context: context).addPreformedSurgeries(context, patientDiagnosis: widget.patientDiagnosis!,
                 namePerformed: namePerformedController.value.text, notesPerformed: notesPerformedController.value.text,
                 locationPerformed: locationPerformedController.value.text, clinicPerformed: clinicPerformedController.value.text,
                 datePerformed: DateFormat.yMd().parse(datePerformedController.value.text))
@@ -72,10 +73,10 @@ class _AddPreformedSurgeriesScreenState extends State<AddPreformedSurgeriesScree
               widget.patientDiagnosis!.preformedSurgeries?.notesPerformed=notesPerformedController.value.text,
               widget.patientDiagnosis!.preformedSurgeries?.locationPerformed=locationPerformedController.value.text,
               widget.patientDiagnosis!.preformedSurgeries?.datePerformed= DateFormat.yMd().parse(datePerformedController.value.text),
-              PatientDiagnosisController(context: context).updatePreformedSurgeries(context, patientDiagnosis: widget.patientDiagnosis!,)
+              result=await PatientDiagnosisController(context: context).updatePreformedSurgeries(context, patientDiagnosis: widget.patientDiagnosis!,)
             };
             buttonSetState(() {
-              addOrEdit=widget.patientDiagnosis?.preformedSurgeries==null;
+              addOrEdit=widget.patientDiagnosis?.preformedSurgeries==null||result['status'];
             });
           }
         },

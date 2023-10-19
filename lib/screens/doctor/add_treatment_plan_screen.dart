@@ -60,10 +60,11 @@ class _AddTreatmentPlanScreenState extends State<AddTreatmentPlanScreen> {
         builder: (context,buttonSetState) =>
       FloatingActionButton.extended(
         icon: const Icon(Icons.add),
-        onPressed: () {
+        onPressed: () async {
           if (_formKey.currentState!.validate()) {
+            var result;
             addOrEdit?
-            PatientDiagnosisController(context: context).addTreatmentPlan(context, patientDiagnosis: widget.patientDiagnosis!
+            result =await PatientDiagnosisController(context: context).addTreatmentPlan(context, patientDiagnosis: widget.patientDiagnosis!
                 , namePlan: namePlanController.value.text, clinicPlan: clinicPlanController.value.text
                 , treatmentPlan: treatmentPlanController.value.text, diseasePlan: diseasePlanController.value.text
                 , testFiles: myTestFiles, xRayFiles: myXRayFiles, appointments: appointments)
@@ -72,11 +73,11 @@ class _AddTreatmentPlanScreenState extends State<AddTreatmentPlanScreen> {
               widget.patientDiagnosis!.treatmentPlan?.clinicPlan=clinicPlanController.value.text,
               widget.patientDiagnosis!.treatmentPlan?.treatmentPlan=treatmentPlanController.value.text,
               widget.patientDiagnosis!.treatmentPlan?.diseasePlan=diseasePlanController.value.text,
-              PatientDiagnosisController(context: context).updateTreatmentPlan(context, patientDiagnosis: widget.patientDiagnosis!,
+              result=await PatientDiagnosisController(context: context).updateTreatmentPlan(context, patientDiagnosis: widget.patientDiagnosis!,
                 testFiles: myTestFiles, xRayFiles: myXRayFiles, appointments: appointments)
             };
             buttonSetState(() {
-              addOrEdit=widget.patientDiagnosis?.preformedSurgeries==null;
+              addOrEdit=widget.patientDiagnosis?.preformedSurgeries==null||result['status'];
             });
           }
         },
