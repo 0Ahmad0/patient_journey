@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:patient_journey/controller/provider/chat_provider.dart';
 import 'package:patient_journey/controller/provider/mail_provider.dart';
 import 'package:patient_journey/controller/provider/medical_provider.dart';
@@ -28,6 +29,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  GetStorage.init();
   Provider.debugCheckInvalidValueType = null;
   runApp(const MyApp());
 }

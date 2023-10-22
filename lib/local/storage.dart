@@ -16,6 +16,8 @@ class AppStorage {
 
 
   static init(BuildContext context) async {
+
+
     if (!_storage.hasData(AppConstants.isLoginedKEY)) {
       storageWrite(key: AppConstants.isLoginedKEY, value: false);
     } else {

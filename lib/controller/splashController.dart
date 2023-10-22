@@ -19,7 +19,6 @@ class SplashController{
       ///TODO language
        // context.locale =(Locale(Advance.language));
 
-
       ///end
       if(Advance.isLogined&&Advance.token!=""){
         final result = await authProvider.fetchUser(uid: Advance.uid);
