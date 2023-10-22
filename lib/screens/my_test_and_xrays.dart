@@ -70,7 +70,7 @@ class _MyTestAndXRaysScreenState extends State<MyTestAndXRaysScreen> {
                     }
                     for(String xRayFile in patientDiagnosis.treatmentPlan?.xRayFiles??[]){
                       testsXrays.add(xRayFile);
-                      nameTestsXrays.add(patientDiagnosis.preformedSurgeries!.namePerformed);
+                      nameTestsXrays.add( patientDiagnosis.treatmentPlan?.namePlan??'');
                     }
                   }
                 }

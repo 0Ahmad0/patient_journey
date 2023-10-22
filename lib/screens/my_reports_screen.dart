@@ -86,7 +86,7 @@ class _MyReportsScreenState extends State<MyReportsScreen> {
                        }
                        for(String xRayFile in patientDiagnosis.treatmentPlan?.xRayFiles??[]){
                          testsXrays.add(xRayFile);
-                         nameTestsXrays.add(patientDiagnosis.preformedSurgeries!.namePerformed);
+                         nameTestsXrays.add(patientDiagnosis.treatmentPlan?.namePlan??'');
                        }
 
 

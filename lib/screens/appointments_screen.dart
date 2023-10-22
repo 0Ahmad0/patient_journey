@@ -77,8 +77,8 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
 
                             TabBarView(
                               children: [
-                                CurrentAppointments(selectDate:selectDate,patientDiagnoses: patientDiagnosisController.patientDiagnosisProvider.patientDiagnoses.listPatientDiagnosis,),
-                                NextAppointments(selectDate:selectDate,patientDiagnoses: patientDiagnosisController.patientDiagnosisProvider.patientDiagnoses.listPatientDiagnosis),
+                                CurrentAppointments(selectDate:selectDate,patientDiagnoses: patientDiagnosisController.patientDiagnosisProvider?.patientDiagnoses?.listPatientDiagnosis??[],),
+                                NextAppointments(selectDate:selectDate,patientDiagnoses: patientDiagnosisController.patientDiagnosisProvider?.patientDiagnoses?.listPatientDiagnosis??[]),
                               ],
                             );
                         } else {
@@ -117,7 +117,7 @@ class CurrentAppointments extends StatelessWidget {
     List<PatientDiagnosis> temp=[];
 
     for(PatientDiagnosis patientDiagnosis in patientDiagnoses)
-       if(patientDiagnosis.treatmentPlan!.appointments.contains(DateFormat.yMd().parse(DateFormat.yMd().format(selectDate))))
+       if(patientDiagnosis.treatmentPlan!=null&&patientDiagnosis.treatmentPlan!.appointments.contains(DateFormat.yMd().parse(DateFormat.yMd().format(selectDate))))
          temp.add(patientDiagnosis);
     patientDiagnoses=temp;
     return
@@ -168,7 +168,7 @@ class NextAppointments extends StatelessWidget {
   Widget build(BuildContext context) {
     List<PatientDiagnosis> temp=[];
     for(PatientDiagnosis patientDiagnosis in patientDiagnoses)
-      for(DateTime dateTime in patientDiagnosis.treatmentPlan!.appointments)
+      for(DateTime dateTime in patientDiagnosis.treatmentPlan?.appointments??[])
         if(dateTime.compareTo(DateFormat.yMd().parse(DateFormat.yMd().format(selectDate)))==1){
           temp.add(patientDiagnosis);
           break;
