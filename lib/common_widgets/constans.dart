@@ -13,21 +13,26 @@ class Const{
   static loading (context){
     //ToDo lock screen
     Get.dialog(
-        Center(
-          child: Container(
-              alignment: Alignment.center,
-              width:  MediaQuery.sizeOf(context).width  * 0.2,
-              height: MediaQuery.sizeOf(context).width * 0.2,
-              decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(8)),
-              child:
-              CircularProgressIndicator(
-                color: AppColors.primary,
-              )
-              // LoadingAnimationWidget.inkDrop(
-              //     color: AppColors.primary,
-              //     size: MediaQuery.sizeOf(context).width * 0.1)
+        WillPopScope(
+          onWillPop: (){
+            return Future(() => false);
+          },
+          child: Center(
+            child: Container(
+                alignment: Alignment.center,
+                width:  MediaQuery.sizeOf(context).width  * 0.2,
+                height: MediaQuery.sizeOf(context).width * 0.2,
+                decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(8)),
+                child:
+                CircularProgressIndicator(
+                  color: AppColors.primary,
+                )
+                // LoadingAnimationWidget.inkDrop(
+                //     color: AppColors.primary,
+                //     size: MediaQuery.sizeOf(context).width * 0.1)
+            ),
           ),
         ),
         barrierDismissible: false

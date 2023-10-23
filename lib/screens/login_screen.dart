@@ -69,9 +69,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         AppTextFormFiled(
-                          iconData: Icons.email,
+                          iconData: Icons.accessibility,
                           controller: idController,
-                          hintText: 'Enter your Email',
+                          hintText: 'Enter your Email or Id',
                         ),
                         const SizedBox(
                           height: 20.0,
