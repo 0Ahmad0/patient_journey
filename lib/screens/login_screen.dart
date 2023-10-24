@@ -71,7 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         AppTextFormFiled(
                           iconData: Icons.accessibility,
                           controller: idController,
-                          hintText: 'Enter your Email or Id',
+                          hintText: 'Enter Id or Email',
                         ),
                         const SizedBox(
                           height: 20.0,

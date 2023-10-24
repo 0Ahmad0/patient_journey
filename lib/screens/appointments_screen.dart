@@ -43,7 +43,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             title: Text('Appointments'),
             bottom: TabBar(tabs: [
               Tab(
-                text: 'Current',
+                text: 'Today',
               ),
               Tab(
                 text: 'Next',
@@ -77,7 +77,10 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
 
                             TabBarView(
                               children: [
-                                CurrentAppointments(selectDate:selectDate,patientDiagnoses: patientDiagnosisController.patientDiagnosisProvider?.patientDiagnoses?.listPatientDiagnosis??[],),
+                                CurrentAppointments(
+                                  selectDate:selectDate,
+                                  patientDiagnoses: patientDiagnosisController.patientDiagnosisProvider?.patientDiagnoses?.listPatientDiagnosis
+                                      ??[],),
                                 NextAppointments(selectDate:selectDate,patientDiagnoses: patientDiagnosisController.patientDiagnosisProvider?.patientDiagnoses?.listPatientDiagnosis??[]),
                               ],
                             );
@@ -122,7 +125,7 @@ class CurrentAppointments extends StatelessWidget {
     patientDiagnoses=temp;
     return
       patientDiagnoses.isEmpty?
-      Const.emptyWidget(context,text: "Not Patients Yet"):
+      Const.emptyWidget(context,text: "Not Appointments Yet"):
       ListView.builder(
         itemCount: patientDiagnoses.length,
       itemBuilder: (_, index) => Card(
